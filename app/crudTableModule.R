@@ -62,11 +62,9 @@ crudTableOutput <- function(id) {
 
 
 
-crudTable <- function(input, output, session) {
+crudTable <- function(input, output, session, dao) {
     data <- reactive({
-        d <- CO2
-        d$uid <- seq_len(nrow(d))
-        d
+        dao$getData()
     })
 
     observeEvent(input$deleteId, {
@@ -75,7 +73,7 @@ crudTable <- function(input, output, session) {
     })
 
     observeEvent(input$deleteAction, {
-        print(paste0('Deleting ', input$deleteId))
+        dao$delete(input$deleteId)
         removeModal()
     })
 
@@ -86,8 +84,7 @@ crudTable <- function(input, output, session) {
     observeEvent(input$newAction, {
         record <- list(model=input$attrModel,
                        wt=input$attrWt)
-        print('Saving new')
-        str(record)
+        dao$insert(record)
         removeModal()
     })
 
@@ -97,17 +94,15 @@ crudTable <- function(input, output, session) {
     })
 
     observeEvent(input$editAction, {
-        record <- list(id=input$editId,
-                       model=input$attrModel,
+        record <- list(model=input$attrModel,
                        wt=input$attrWt)
-        print('Updating')
-        str(record)
+        dao$update(input$editId, record)
         removeModal()
     })
 
     output$table <- renderDataTable({
         d <- data()
-        actions <- purrr::map_chr(d$uid, function(id_) {
+        actions <- purrr::map_chr(d$id, function(id_) {
             paste0('<div class="btn-group" style="width: 75px;" role="group">',
                    .tableButton('editId', id_, 'Edit', 'edit', session),
                    .tableButton('deleteId', id_, 'Delete', 'trash-o', session),
