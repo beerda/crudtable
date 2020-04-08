@@ -1,0 +1,123 @@
+crudTableOutput <- function(id) {
+    ns <- NS(id)
+    tagList(
+        actionButton(ns('newButton'),
+                     label='New Record',
+                     class='btn-primary',
+                     icon=icon('plus')),
+        tags$br(),
+        tags$br(),
+        dataTableOutput(ns('table'))
+    )
+}
+
+
+.showDeleteDialog <- function(session) {
+    ns <- session$ns
+    showModal(
+        modalDialog('Are you sure you want to delete the record?',
+                    footer=list(
+                        modalButton('Cancel'),
+                        actionButton(ns('deleteAction'), 'Delete')
+                    )
+        )
+    )
+}
+
+
+.showEditDialog <- function(action, title, session) {
+    ns <- session$ns
+    showModal(
+        modalDialog(
+            fluidRow(
+                column(width=6,
+                       textInput(ns("attrModel"), 'Model', value = '')
+                ),
+                column(width=6,
+                       numericInput(ns('attrWt'), 'Weight (lbs)', value = '', min = 0, step = 1)
+                )
+            ),
+            title=title,
+            footer=list(
+                modalButton('Cancel'),
+                actionButton(ns(action), 'Submit')
+            )
+        )
+    )
+}
+
+
+.tableButton <- function(action, id, title, icon, session) {
+    ns <- session$ns
+    paste0('<button ',
+           'class="btn btn-sm" ',
+           'data-toggle="tooltip" ',
+           'data-placement="top" ',
+           'style="margin: 0" ',
+           'title="', title, '" ',
+           'onClick="Shiny.setInputValue(\'', ns(action), '\', ', id, ', { priority: \'event\' });">',
+           '<i class="fa fa-', icon, '"></i>',
+           '</button>')
+}
+
+
+
+crudTable <- function(input, output, session) {
+    data <- reactive({
+        d <- CO2
+        d$uid <- seq_len(nrow(d))
+        d
+    })
+
+    observeEvent(input$deleteId, {
+        id <- input$deleteId
+        .showDeleteDialog(session)
+    })
+
+    observeEvent(input$deleteAction, {
+        print(paste0('Deleting ', input$deleteId))
+        removeModal()
+    })
+
+    observeEvent(input$newButton, {
+        .showEditDialog('newAction', 'New', session)
+    })
+
+    observeEvent(input$newAction, {
+        record <- list(model=input$attrModel,
+                       wt=input$attrWt)
+        print('Saving new')
+        str(record)
+        removeModal()
+    })
+
+    observeEvent(input$editId, {
+        id <- input$editId
+        .showEditDialog('editAction', 'Edit', session)
+    })
+
+    observeEvent(input$editAction, {
+        record <- list(id=input$editId,
+                       model=input$attrModel,
+                       wt=input$attrWt)
+        print('Updating')
+        str(record)
+        removeModal()
+    })
+
+    output$table <- renderDataTable({
+        d <- data()
+        actions <- purrr::map_chr(d$uid, function(id_) {
+            paste0('<div class="btn-group" style="width: 75px;" role="group">',
+                   .tableButton('editId', id_, 'Edit', 'edit', session),
+                   .tableButton('deleteId', id_, 'Delete', 'trash-o', session),
+                   '</div>'
+            )
+        })
+        d <- cbind(tibble(' '=actions), d)
+        datatable(d,
+                  rownames=FALSE,
+                  selection='none',
+                  escape=-1)  # escape HTML everywhere except the first column
+    })
+}
