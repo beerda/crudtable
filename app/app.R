@@ -13,7 +13,7 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
-    crudTable <- callModule(crudTable, 'tab')
+    callModule(crudTable, 'tab')
 }
 
 
