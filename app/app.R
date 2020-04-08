@@ -3,6 +3,7 @@ library(DT)
 library(tidyverse)
 
 source('dao.R')
+source('form.R')
 source('crudTableModule.R')
 
 
@@ -14,7 +15,7 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
-    callModule(crudTable, 'tab', dao)
+    callModule(crudTable, 'tab', dao, formUI, form)
 }
 
 

@@ -62,7 +62,9 @@ crudTableOutput <- function(id) {
 
 
 
-crudTable <- function(input, output, session, dao) {
+crudTable <- function(input, output, session, dao, formUI, form) {
+    ns <- session$ns
+
     data <- reactive({
         dao$getData()
     })
@@ -78,14 +80,13 @@ crudTable <- function(input, output, session, dao) {
     })
 
     observeEvent(input$newButton, {
-        .showEditDialog('newAction', 'New', session)
+        showModal(formUI(ns('newForm'), 'New'))
     })
 
-    observeEvent(input$newAction, {
-        record <- list(model=input$attrModel,
-                       wt=input$attrWt)
-        dao$insert(record)
-        removeModal()
+    newForm <- callModule(form, 'newForm')
+
+    observeEvent(newForm$trigger(), ignoreInit=TRUE, {
+        dao$insert(newForm$record())
     })
 
     observeEvent(input$editId, {
