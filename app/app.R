@@ -1,11 +1,12 @@
 library(shiny)
 library(DT)
 library(tidyverse)
+library(DBI)
+library(RSQLite)
 
 source('dao.R')
 source('form.R')
 source('crudTableModule.R')
-
 
 ui <- fluidPage(
     titlePanel('CRUD'),
