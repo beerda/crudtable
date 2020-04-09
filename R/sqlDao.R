@@ -20,7 +20,7 @@ sqlDao <- function(con, def) {
                           ' WHERE rowid=$', length(persist) + 1)
     deleteQuery <- paste0('DELETE FROM ', def$table, ' WHERE rowid=?')
 
-    list(
+    structure(list(
         getData=function() {
             res <- dbSendQuery(con, dataQuery)
             d <- dbFetch(res)
@@ -58,5 +58,5 @@ sqlDao <- function(con, def) {
             assert_that(is.scalar(id) && is.numeric(id))
             dbExecute(con, deleteQuery, params=list(id))
         }
-    )
+    ), class='dao')
 }

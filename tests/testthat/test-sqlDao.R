@@ -8,6 +8,10 @@ test_that("sqlDao", {
     dbWriteTable(con, 'test', data)
 
     dao <- sqlDao(con, def)
+    expect_true(is.list(dao))
+    expect_true(inherits(dao, 'dao'))
+    expect_true(is.dao(dao))
+    expect_false(is.dao(list()))
 
     expect_equal(dao$getData(),
                  data.frame(id=1:5, title=letters[1:5], value=2 * 1:5, stringsAsFactors = FALSE))
