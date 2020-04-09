@@ -1,11 +1,7 @@
 #' @export
-#' @importFrom yaml read_yaml
 #' @import DBI
 sqlDao <- function(con, def) {
-    if (is.character(def) && is.scalar(def)) {
-        def <- read_yaml(def)
-    }
-    assert_that(is.list(def))
+    def <- datadef(def)
 
     persist <- map_lgl(def$columns, function(col) col$persistent)
     persist <-names(persist)[persist]
