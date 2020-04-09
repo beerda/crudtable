@@ -25,6 +25,10 @@ test_that("sqlDao", {
                  data.frame(id=c(1,2,4,5,6),
                             title=c(letters[c(1,2,4,5)], 'bz'), value=c(2 * c(1,2,4,5), 8), stringsAsFactors = FALSE))
 
+    res <- dao$delete(20)
+    expect_equal(res, 0)
+    expect_equal(nrow(dao$getData()), 5)
+
     res <- dao$update(2, list(title='aaa', value=1))
     expect_equal(res, 1)
     expect_equal(dao$getData(),
