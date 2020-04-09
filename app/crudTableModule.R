@@ -12,41 +12,6 @@ crudTableOutput <- function(id) {
 }
 
 
-.showDeleteDialog <- function(session) {
-    ns <- session$ns
-    showModal(
-        modalDialog('Are you sure you want to delete the record?',
-                    footer=list(
-                        modalButton('Cancel'),
-                        actionButton(ns('deleteAction'), 'Delete')
-                    )
-        )
-    )
-}
-
-
-.showEditDialog <- function(action, title, session) {
-    ns <- session$ns
-    showModal(
-        modalDialog(
-            fluidRow(
-                column(width=6,
-                       textInput(ns("attrModel"), 'Model', value = '')
-                ),
-                column(width=6,
-                       numericInput(ns('attrWt'), 'Weight (lbs)', value = '', min = 0, step = 1)
-                )
-            ),
-            title=title,
-            footer=list(
-                modalButton('Cancel'),
-                actionButton(ns(action), 'Submit')
-            )
-        )
-    )
-}
-
-
 .tableButton <- function(action, id, title, icon, session) {
     ns <- session$ns
     paste0('<button ',
@@ -64,16 +29,25 @@ crudTableOutput <- function(id) {
 
 crudTable <- function(input, output, session, dao, formUI, form) {
     ns <- session$ns
+    dataChangedTrigger <- reactiveVal(0)
 
     # ---- delete record ---------------------------------------
 
     observeEvent(input$deleteId, {
         id <- input$deleteId
-        .showDeleteDialog(session)
+        showModal(
+            modalDialog('Are you sure you want to delete the record?',
+                        footer=list(
+                            modalButton('Cancel'),
+                            actionButton(ns('deleteAction'), 'Delete')
+                        )
+            )
+        )
     })
 
     observeEvent(input$deleteAction, {
         dao$delete(input$deleteId)
+        dataChangedTrigger(dataChangedTrigger() + 1)
         removeModal()
     })
 
@@ -87,6 +61,7 @@ crudTable <- function(input, output, session, dao, formUI, form) {
 
     observeEvent(newForm$trigger(), ignoreInit=TRUE, {
         dao$insert(newForm$record())
+        dataChangedTrigger(dataChangedTrigger() + 1)
     })
 
     # ---- edit record -----------------------------------------
@@ -100,11 +75,13 @@ crudTable <- function(input, output, session, dao, formUI, form) {
 
     observeEvent(editForm$trigger(), ignoreInit=TRUE, {
         dao$update(input$editId, editForm$record())
+        dataChangedTrigger(dataChangedTrigger() + 1)
     })
 
     # ---- outputs ---------------------------------------------
 
     data <- reactive({
+        dataChangedTrigger()
         dao$getData()
     })
 
