@@ -1,34 +1,33 @@
----
 table: CO2
 columns:
-    - id: Plant
-      name: Plant
-      type: text
-      na: FALSE
-      persistent: TRUE
-    - id: Type
-      name: Type
-      type: enum
-      levels: [ Quebec, Mississippi ]
-      na: FALSE
-      persistent: TRUE
-    - id: Treatment
-      name: Treatment
-      type: enum
-      levels: [ nonchilled, chilled ]
-      na: FALSE
-      persistent: TRUE
-    - id: conc
-      name: Concentration
-      type: numeric
-      min: 10
-      max: 1000
-      na: FALSE
-      persistent: TRUE
-    - id: uptake
-      name: Uptake
-      type: numeric
-      min: 0
-      max: 100
-      na: FALSE
-      persistent: TRUE
+    Plant:
+        name: Plant
+        type: text
+        na: FALSE
+        persistent: TRUE
+    Type:
+        name: Type
+        type: enum
+        levels: [ Quebec, Mississippi ]
+        na: FALSE
+        persistent: TRUE
+    Treatment:
+        name: Treatment
+        type: enum
+        levels: [ nonchilled, chilled ]
+        na: FALSE
+        persistent: TRUE
+    conc:
+        name: Concentration
+        type: numeric
+        min: 10
+        max: 1000
+        na: FALSE
+        persistent: TRUE
+    uptake:
+        name: Uptake
+        type: numeric
+        min: 0
+        max: 100
+        na: FALSE
+        persistent: TRUE
