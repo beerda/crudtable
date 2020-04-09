@@ -35,5 +35,11 @@ test_that("sqlDao", {
                  data.frame(id=c(1,2,4,5,6),
                             title=c('a', 'aaa', 'd', 'e', 'bz'), value=c(2, 1, 8, 10, 8), stringsAsFactors = FALSE))
 
+    res <- dao$update(20, list(title='aaa', value=1))
+    expect_equal(res, 0)
+    expect_equal(dao$getData(),
+                 data.frame(id=c(1,2,4,5,6),
+                            title=c('a', 'aaa', 'd', 'e', 'bz'), value=c(2, 1, 8, 10, 8), stringsAsFactors = FALSE))
+
     dbDisconnect(con)
 })
