@@ -1,6 +1,7 @@
 test_that("sqlDao", {
     def <- list(table='test',
                 columns=list(title=list(name='Title', type='text', na=FALSE, persistent=TRUE),
+                             computed=list(name='Computed', type='numeric', na=FALSE, persistent=FALSE),
                              value=list(name='Value', type='numeric', min=1, max=10, na=FALSE, persistent=TRUE)))
     data <- data.frame(title=letters[1:5], value=2 * 1:5)
     con <- dbConnect(RSQLite::SQLite(), ":memory:")

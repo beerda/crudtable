@@ -8,7 +8,7 @@ sqlDao <- function(con, def) {
     assert_that(is.list(def))
 
     persist <- map_lgl(def$columns, function(col) col$persistent)
-    persist <-names(def$columns)
+    persist <-names(persist)[persist]
     cols <- paste0(persist, collapse=', ')
 
     dataQuery <- paste0('SELECT rowid as id, ', cols, ' FROM ', def$table)
