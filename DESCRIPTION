@@ -17,3 +17,5 @@ Imports:
     yaml,
     purrr,
     DBI
+Suggests: 
+    testthat (>= 2.1.0)

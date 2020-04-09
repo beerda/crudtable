@@ -8,7 +8,7 @@ sqlDao <- function(con, def) {
     assert_that(is.list(def))
 
     persist <- map_lgl(def$columns, function(col) col$persistent)
-    persist <- map_chr(def$columns[persist], function(col) col$id)
+    persist <-names(def$columns)
     cols <- paste0(persist, collapse=', ')
 
     dataQuery <- paste0('SELECT rowid as id, ', cols, ' FROM ', def$table)
@@ -17,7 +17,7 @@ sqlDao <- function(con, def) {
                           'VALUES ($', paste0(seq_along(persist), collapse=', $'), ')')
     updateQuery <- paste0('UPDATE ', def$table, ' SET ',
                           paste0(persist, '=$', seq_along(persist), collapse=', '),
-                          'WHERE rowid=$', length(persist) + 1)
+                          ' WHERE rowid=$', length(persist) + 1)
     deleteQuery <- paste0('DELETE FROM ', def$table, ' WHERE rowid=?')
 
     list(
@@ -33,21 +33,24 @@ sqlDao <- function(con, def) {
             res <- dbSendQuery(con, recordQuery, params=list(id))
             d <- dbFetch(res)
             dbClearResult(res)
+            if (nrow(d) <= 0) {
+                return(NULL);
+            }
             as.list(d)
         },
 
         insert=function(record) {
             assert_that(is.list(record))
-            assert_that(length(setdiff(ids, names(record))) == 0)
-            v <- unname(record[ids])
+            assert_that(length(setdiff(persist, names(record))) == 0)
+            v <- unname(record[persist])
             dbExecute(con, insertQuery, params=v)
         },
 
         update=function(id, record) {
             assert_that(is.scalar(id) && is.numeric(id))
             assert_that(is.list(record))
-            assert_that(length(setdiff(ids, names(record))) == 0)
-            v <- unname(record[ids])
+            assert_that(length(setdiff(persist, names(record))) == 0)
+            v <- unname(record[persist])
             dbExecute(con, updateQuery, params=c(v, id))
         },
 
