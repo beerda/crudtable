@@ -28,7 +28,7 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
-    callModule(crudTable, 'crud', dao, form$ui, form$server)
+    callModule(crudTable, 'crud', dao, form)
 }
 
 
