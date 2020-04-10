@@ -1,4 +1,4 @@
-crudTableOutput <- function(id) {
+crudTableUI <- function(id) {
     ns <- NS(id)
     tagList(
         actionButton(ns('newButton'),
