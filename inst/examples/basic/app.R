@@ -5,15 +5,15 @@ library(RSQLite)
 
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 shiny::onStop(function() { dbDisconnect(con) })
-dbWriteTable(con, 'CO2', as.data.frame(CO2))
+dbWriteTable(con, 'CO2', as.data.frame(CO2[1:5, ]))
 
 
 def <- list(
     table='CO2',
     columns=list(Plant=list(),
                  Type=list(type='enum', levels=c('Quebec', 'Mississippi')),
-                 Treatment=list(type='enum', levels=c('nonchilled', 'chilled')),
-                 conc=list(name='Ambient CO2 concentration [mL/L]', type='numeric', min=50, max=1000),
+                 Treatment=list(type='enum', levels=c('nonchilled', 'chilled'), default='chilled'),
+                 conc=list(name='Ambient CO2 concentration [mL/L]', type='numeric', min=50, max=1000, default=100),
                  uptake=list(name='CO2 uptake rates [umol/m2 sec]', type='numeric', min=0, max=100))
 )
 dao <- sqlDao(con, def)

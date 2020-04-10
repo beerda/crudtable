@@ -1,7 +1,8 @@
 .datadefDefaults <- list(
     type='text',
     na=FALSE,
-    persistent=TRUE
+    persistent=TRUE,
+    default=''
 )
 
 
