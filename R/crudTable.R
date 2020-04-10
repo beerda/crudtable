@@ -1,3 +1,4 @@
+#' @export
 crudTableUI <- function(id) {
     ns <- NS(id)
     tagList(
@@ -27,6 +28,7 @@ crudTableUI <- function(id) {
 
 
 
+#' @export
 crudTable <- function(input, output, session, dao, formUI, form) {
     ns <- session$ns
     dataChangedTrigger <- reactiveVal(0)
