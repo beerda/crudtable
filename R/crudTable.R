@@ -8,7 +8,7 @@ crudTableUI <- function(id) {
                      icon=icon('plus')),
         tags$br(),
         tags$br(),
-        dataTableOutput(ns('table'))
+        DT::dataTableOutput(ns('table'))
     )
 }
 
@@ -88,7 +88,7 @@ crudTable <- function(input, output, session, dao, form) {
         dao$getData()
     })
 
-    output$table <- renderDataTable({
+    output$table <- DT::renderDataTable({
         d <- data()
         actions <- purrr::map_chr(d$id, function(id_) {
             paste0('<div class="btn-group" style="width: 75px;" role="group">',
@@ -97,10 +97,11 @@ crudTable <- function(input, output, session, dao, form) {
                    '</div>'
             )
         })
-        d <- cbind(tibble(' '=actions), d)
-        datatable(d,
-                  rownames=FALSE,
-                  selection='none',
-                  escape=-1)  # escape HTML everywhere except the first column
+        d <- cbind(data.frame(' '=actions, check.names=FALSE, stringsAsFactors=FALSE),
+                   d)
+        DT::datatable(d,
+                      rownames=FALSE,
+                      selection='none',
+                      escape=-1)  # escape HTML everywhere except the first column
     })
 }
