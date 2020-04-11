@@ -5,18 +5,18 @@ simpleForm <- function(def) {
     persist <-names(persist)[persist]
 
     list(
-        ui=function(id, title) {
+        ui = function(id, title) {
             ns <- NS(id)
             elements <- map(names(def$columns), function(colid) {
                 col <- def$columns[[colid]]
                 inputId <- ns(colid)
                 if (col$type == 'numeric') {
                     numericInput(inputId,
-                                 label=col$name,
-                                 value=null2empty(col$default),
-                                 min=null2na(col$min),
-                                 max=null2na(col$max),
-                                 step=null2na(col$step))
+                                 label = col$name,
+                                 value = null2empty(col$default),
+                                 min = null2na(col$min),
+                                 max = null2na(col$max),
+                                 step = null2na(col$step))
                 } else if (col$type == 'enum') {
                     selectInput(inputId,
                                 label=col$name,
@@ -24,13 +24,13 @@ simpleForm <- function(def) {
                                 selected=col$default)
                 } else {
                     textInput(inputId,
-                              label=col$name,
-                              value=null2empty(col$default))
+                              label = col$name,
+                              value = null2empty(col$default))
                 }
             })
             do.call(modalDialog,  c(elements, list(
-                title=title,
-                footer=list(
+                title = title,
+                footer = list(
                     modalButton('Cancel'),
                     actionButton(ns("submit"), 'Submit')
                 )
@@ -38,8 +38,8 @@ simpleForm <- function(def) {
         },
 
         server=function(input, output, session) {
-            result <- list(trigger=reactiveVal(0),
-                           record=reactiveVal(NULL))
+            result <- list(trigger = reactiveVal(0),
+                           record = reactiveVal(NULL))
 
             observeEvent(result$record(), {
                 rec <- result$record()
@@ -47,11 +47,11 @@ simpleForm <- function(def) {
                     col <- def$columns[[colid]]
                     inputId <- colid
                     if (col$type == 'numeric') {
-                        updateNumericInput(session, inputId, value=rec[[colid]])
+                        updateNumericInput(session, inputId, value = rec[[colid]])
                     } else if (col$type == 'enum') {
-                        updateSelectInput(session, inputId, selected=rec[[colid]])
+                        updateSelectInput(session, inputId, selected = rec[[colid]])
                     } else {
-                        updateTextInput(session, inputId, value=rec[[colid]])
+                        updateTextInput(session, inputId, value = rec[[colid]])
                     }
                 }
             })

@@ -1,13 +1,13 @@
 .datadefDefaults <- list(
-    type='text',
-    na=FALSE,
-    persistent=TRUE,
-    default=''
+    type = 'text',
+    na = FALSE,
+    persistent = TRUE,
+    default = ''
 )
 
 
 #' @export
-datadef <- function(def=NULL, table=NULL, columns=NULL) {
+datadef <- function(def = NULL, table = NULL, columns = NULL) {
     res <- NULL
     if (is.list(def)) {
         assert_that(is.null(table))
@@ -15,7 +15,7 @@ datadef <- function(def=NULL, table=NULL, columns=NULL) {
         res <- def
     } else {
         assert_that(is.null(def))
-        res <- list(table=table, columns=columns)
+        res <- list(table = table, columns = columns)
     }
     assert_that(is.scalar(res$table) && is.character(res$table))
     assert_that(is.list(res$columns))
