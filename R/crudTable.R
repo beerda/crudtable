@@ -2,6 +2,8 @@
 crudTableUI <- function(id) {
     ns <- NS(id)
     tagList(
+        shinyFeedback::useShinyFeedback(),
+        shinyjs::useShinyjs(),
         actionButton(ns('newButton'),
                      label = 'New Record',
                      class = 'btn-primary',

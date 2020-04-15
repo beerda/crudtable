@@ -1,8 +1,12 @@
 #' @export
 simpleForm <- function(def) {
     def <- datadef(def)
+
     persist <- map_lgl(def$columns, function(col) col$persistent)
     persist <-names(persist)[persist]
+
+    nona <- map_lgl(def$columns, function(col) col$na)
+    nona <- names(nona)[!nona]
 
     list(
         ui = function(id, title) {
@@ -53,6 +57,36 @@ simpleForm <- function(def) {
                     } else {
                         updateTextInput(session, inputId, value = rec[[colid]])
                     }
+                }
+            })
+
+            errors <- rep(FALSE, length(nona))
+            names(errors) <- nona
+            errors <- reactiveVal(errors)
+            for (n in nona) {
+                local({
+                    nn <- n
+                    observeEvent(input[[nn]], {
+                        v <- input[[nn]]
+                        err <- errors()
+                        invalid <- is.null(v) || is.na(v) || trimws(v) == ''
+                        shinyFeedback::feedbackDanger(session$ns(nn), invalid, 'must not be empty')
+                        if (invalid) {
+                            err[nn] <- TRUE
+                        } else {
+                            err[nn] <- FALSE
+                        }
+                        errors(err)
+                    }, ignoreNULL=FALSE)
+                })
+            }
+
+            observe({
+                err <- errors()
+                if (any(err)) {
+                    shinyjs::disable('submit')
+                } else {
+                    shinyjs::enable('submit')
                 }
             })
 

@@ -17,7 +17,9 @@ Imports:
     purrr,
     DBI,
     shiny,
-    DT
+    DT,
+    shinyFeedback,
+    shinyjs
 Suggests: 
     testthat (>= 2.1.0),
     RSQLite
