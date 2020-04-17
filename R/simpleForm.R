@@ -48,15 +48,7 @@ simpleForm <- function(def) {
             observeEvent(result$record(), {
                 rec <- result$record()
                 for (colid in persist) {
-                    col <- def$columns[[colid]]
-                    inputId <- colid
-                    if (col$type == 'numeric') {
-                        updateNumericInput(session, inputId, value = rec[[colid]])
-                    } else if (col$type == 'enum') {
-                        updateSelectInput(session, inputId, selected = rec[[colid]])
-                    } else {
-                        updateTextInput(session, inputId, value = rec[[colid]])
-                    }
+                    session$sendInputMessage(colid, list(value = rec[[colid]])) # update input value
                 }
             })
 
