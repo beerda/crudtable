@@ -15,8 +15,8 @@ dbWriteTable(con, 'CO2', as.data.frame(CO2[1:5, ]))
 
 # Create Data Access Object
 dao <- sqlDao(con,
-              'CO2',
-              c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
+              table = 'CO2',
+              attributes = c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
 
 # Create edit form dialog
 formUI <- function(id, title) {
@@ -36,7 +36,7 @@ formUI <- function(id, title) {
 }
 
 # Create edit form dialog handler
-formServer <- editDialogServer(c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
+formServer <- editDialogServer(dao$getAttributes())
 
 # User Interface
 ui <- fluidPage(

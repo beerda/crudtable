@@ -15,6 +15,10 @@ sqlDao <- function(con, table, attributes) {
     deleteQuery <- paste0('DELETE FROM ', table, ' WHERE rowid = ?')
 
     structure(list(
+        getAttributes = function() {
+            attributes
+        },
+
         getData = function() {
             res <- DBI::dbSendQuery(con, dataQuery)
             d <- DBI::dbFetch(res)
