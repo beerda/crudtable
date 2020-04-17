@@ -4,8 +4,8 @@ test_that("sqlDao", {
                              computed=list(name='Computed', type='numeric', na=FALSE, persistent=FALSE),
                              value=list(name='Value', type='numeric', min=1, max=10, na=FALSE, persistent=TRUE)))
     data <- data.frame(title=letters[1:5], value=2 * 1:5)
-    con <- dbConnect(RSQLite::SQLite(), ":memory:")
-    dbWriteTable(con, 'test', data)
+    con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+    DBI::dbWriteTable(con, 'test', data)
 
     dao <- sqlDao(con, def)
     expect_true(is.list(dao))
@@ -46,5 +46,5 @@ test_that("sqlDao", {
                  data.frame(id=c(1,2,4,5,6),
                             title=c('a', 'aaa', 'd', 'e', 'bz'), value=c(2, 1, 8, 10, 8), stringsAsFactors = FALSE))
 
-    dbDisconnect(con)
+    DBI::dbDisconnect(con)
 })

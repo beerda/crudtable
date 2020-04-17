@@ -1,5 +1,6 @@
 library(shiny)
 library(crudtable)
+library(DBI)
 library(RSQLite)
 
 

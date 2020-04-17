@@ -1,5 +1,4 @@
 #' @export
-#' @import DBI
 sqlDao <- function(con, def) {
     def <- datadef(def)
 
@@ -18,17 +17,17 @@ sqlDao <- function(con, def) {
 
     structure(list(
         getData = function() {
-            res <- dbSendQuery(con, dataQuery)
-            d <- dbFetch(res)
-            dbClearResult(res)
+            res <- DBI::dbSendQuery(con, dataQuery)
+            d <- DBI::dbFetch(res)
+            DBI::dbClearResult(res)
             d
         },
 
         getRecord = function(id) {
             assert_that(is.scalar(id) && is.numeric(id))
-            res <- dbSendQuery(con, recordQuery, params = list(id))
-            d <- dbFetch(res)
-            dbClearResult(res)
+            res <- DBI::dbSendQuery(con, recordQuery, params = list(id))
+            d <- DBI::dbFetch(res)
+            DBI::dbClearResult(res)
             if (nrow(d) <= 0) {
                 return(NULL);
             }
@@ -37,22 +36,22 @@ sqlDao <- function(con, def) {
 
         insert = function(record) {
             assert_that(is.list(record))
-            assert_that(length(setdiff(persist, names(record))) == 0)
-            v <- unname(record[persist])
-            dbExecute(con, insertQuery, params = v)
+            assert_that(length(setdiff(attributes, names(record))) == 0)
+            v <- unname(record[attributes])
+            DBI::dbExecute(con, insertQuery, params = v)
         },
 
         update = function(id, record) {
             assert_that(is.scalar(id) && is.numeric(id))
             assert_that(is.list(record))
-            assert_that(length(setdiff(persist, names(record))) == 0)
-            v <- unname(record[persist])
-            dbExecute(con, updateQuery, params = c(v, id))
+            assert_that(length(setdiff(attributes, names(record))) == 0)
+            v <- unname(record[attributes])
+            DBI::dbExecute(con, updateQuery, params = c(v, id))
         },
 
         delete = function(id) {
             assert_that(is.scalar(id) && is.numeric(id))
-            dbExecute(con, deleteQuery, params = list(id))
+            DBI::dbExecute(con, deleteQuery, params = list(id))
         }
     ), class = 'dao')
 }
