@@ -31,7 +31,7 @@ crudTableUI <- function(id) {
 
 
 #' @export
-crudTable <- function(input, output, session, dao, form) {
+crudTable <- function(input, output, session, dao, formUI, formServer) {
     ns <- session$ns
     dataChangedTrigger <- reactiveVal(0)
 
@@ -58,10 +58,10 @@ crudTable <- function(input, output, session, dao, form) {
     # ---- new record ------------------------------------------
 
     observeEvent(input$newButton, {
-        showModal(form$ui(ns('newForm'), 'New'))
+        showModal(formUI(ns('newForm'), 'New'))
     })
 
-    newForm <- callModule(form$server, 'newForm')
+    newForm <- callModule(formServer, 'newForm')
 
     observeEvent(newForm$trigger(), ignoreInit = TRUE, {
         dao$insert(newForm$record())
@@ -70,12 +70,12 @@ crudTable <- function(input, output, session, dao, form) {
 
     # ---- edit record -----------------------------------------
 
-    editForm <- callModule(form$server, 'editForm')
+    editForm <- callModule(formServer, 'editForm')
 
     observeEvent(input$editId, {
         id <- input$editId
         editForm$record(dao$getRecord(id))
-        showModal(form$ui(ns('editForm'), 'Edit'))
+        showModal(formUI(ns('editForm'), 'Edit'))
     })
 
     observeEvent(editForm$trigger(), ignoreInit = TRUE, {
