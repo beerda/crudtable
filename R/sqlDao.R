@@ -1,19 +1,18 @@
 #' @export
-sqlDao <- function(con, def) {
-    def <- datadef(def)
+sqlDao <- function(con, table, attributes) {
+    assert_that(is.character(table) && is.scalar(table))
+    assert_that(is.character(attributes))
 
-    persist <- map_lgl(def$columns, function(col) col$persistent)
-    persist <-names(persist)[persist]
-    cols <- paste0(persist, collapse = ', ')
+    attrlist <- paste0(attributes, collapse = ', ')
 
-    dataQuery <- paste0('SELECT rowid as id, ', cols, ' FROM ', def$table)
-    recordQuery <- paste0('SELECT rowid as id, ', cols, ' FROM ', def$table, ' WHERE rowid = ?')
-    insertQuery <- paste0('INSERT INTO ', def$table, ' (', cols, ') ',
-                          'VALUES ($', paste0(seq_along(persist), collapse = ', $'), ')')
-    updateQuery <- paste0('UPDATE ', def$table, ' SET ',
-                          paste0(persist, '=$', seq_along(persist), collapse = ', '),
-                          ' WHERE rowid = $', length(persist) + 1)
-    deleteQuery <- paste0('DELETE FROM ', def$table, ' WHERE rowid = ?')
+    dataQuery <- paste0('SELECT rowid as id, ', attrlist, ' FROM ', table)
+    recordQuery <- paste0('SELECT rowid as id, ', attrlist, ' FROM ', table, ' WHERE rowid = ?')
+    insertQuery <- paste0('INSERT INTO ', table, ' (', attrlist, ') ',
+                          'VALUES ($', paste0(seq_along(attributes), collapse = ', $'), ')')
+    updateQuery <- paste0('UPDATE ', table, ' SET ',
+                          paste0(attributes, '=$', seq_along(attributes), collapse = ', '),
+                          ' WHERE rowid = $', length(attributes) + 1)
+    deleteQuery <- paste0('DELETE FROM ', table, ' WHERE rowid = ?')
 
     structure(list(
         getData = function() {

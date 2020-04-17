@@ -26,7 +26,7 @@ def <- list(
 )
 
 # Create Data Access Object
-dao <- sqlDao(con, def)
+dao <- sqlDao(con, 'CO2', c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
 
 # Create simple edit form
 form <- simpleForm(def)
