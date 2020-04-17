@@ -58,7 +58,7 @@ crudTable <- function(input, output, session, dao, formUI, formServer) {
     # ---- new record ------------------------------------------
 
     observeEvent(input$newButton, {
-        showModal(formUI(ns('newForm'), 'New'))
+        showModal(formUI(ns('newForm')))
     })
 
     newForm <- callModule(formServer, 'newForm')
@@ -75,7 +75,7 @@ crudTable <- function(input, output, session, dao, formUI, formServer) {
     observeEvent(input$editId, {
         id <- input$editId
         editForm$record(dao$getRecord(id))
-        showModal(formUI(ns('editForm'), 'Edit'))
+        showModal(formUI(ns('editForm')))
     })
 
     observeEvent(editForm$trigger(), ignoreInit = TRUE, {

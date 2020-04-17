@@ -19,19 +19,14 @@ dao <- sqlDao(con,
               attributes = c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
 
 # Create edit form dialog
-formUI <- function(id, title) {
+formUI <- function(id) {
     ns <- NS(id)
-    modalDialog(
+    editDialog(id,
         textInput(ns('Plant'), 'Plant'),
         selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
         selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),
         numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]', value = 100, min = 50, max = 1000),
         numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]', value = 0, min = 0, max = 100),
-        title = title,
-        footer = list(
-            modalButton('Cancel'),
-            actionButton(ns('submit'), 'Submit')
-        )
     )
 }
 
