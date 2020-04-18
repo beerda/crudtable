@@ -1,13 +1,17 @@
 Package: crudtable
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Shiny Module for Create-Read-Update-Delete Operations on Data
+Version: 1.0
 Authors@R: 
     person(given = "Michal",
            family = "Burda",
            role = c("aut", "cre"),
            email = "michal.burda@osu.cz",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           comment = c(ORCID = "0000-0002-4182-4407"))
+Description: Crudtable is a module for Shiny web-applications that provides full data manipulation functionality:
+    Creating, Reading, Updating and Deleting. Data are viewed in a data table, which contains buttons for editing
+    or deleting of a record. Data editing is done via user-definable modal dialog that supports various input types
+    as well as validation of input data. Crudtable uses the DBI interface to access the data table so that
+    it is easy to connect it to the database such as SQLite or to modify the in-memory data frame.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
