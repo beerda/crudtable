@@ -2,7 +2,6 @@
 
 export(crudTable)
 export(crudTableUI)
-export(datadef)
 export(editDialog)
 export(editDialogServer)
 export(is.dao)
