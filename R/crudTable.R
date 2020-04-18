@@ -1,17 +1,42 @@
+#' Creates a data table view that allows to add new data, modify existent records or delete the records.
+#'
+#' @param id The ID of the widget
+#' @param newButtonLabel Label of the button for adding of new records. If 'NULL', the button is not shown.
+#' @param newButtonIcon Icon of the button for adding of new records
+#' @param newButtonClass Class of the button for adding of new records
+#' @param newButtonWidth The width of the button, e.g. '400px' or '100%'
+#' @return An editable data table widget
 #' @export
-crudTableUI <- function(id) {
+crudTableUI <- function(id,
+                        newButtonLabel = 'New Record',
+                        newButtonIcon = icon('plus'),
+                        newButtonClass = 'btn-primary',
+                        newButtonWidth = NULL) {
+    assert_that(is_scalar_character(id))
+    assert_that(is.null(newButtonLabel) || is_scalar_character(newButtonLabel))
+    assert_that(is.null(newButtonClass) || is_scalar_character(newButtonClass))
+    assert_that(is.null(newButtonWidth) || is_scalar_character(newButtonWidth))
+
     ns <- NS(id)
-    tagList(
+    args <- list(
         shinyFeedback::useShinyFeedback(),
-        shinyjs::useShinyjs(),
-        actionButton(ns('newButton'),
-                     label = 'New Record',
-                     class = 'btn-primary',
-                     icon = icon('plus')),
-        tags$br(),
-        tags$br(),
-        DT::dataTableOutput(ns('table'))
+        shinyjs::useShinyjs()
     )
+    if (!is.null(newButtonLabel)) {
+        args <- c(args, list(
+            actionButton(ns('newButton'),
+                         label = newButtonLabel,
+                         class = newButtonClass,
+                         icon = newButtonIcon,
+                         width = newButtonWidth),
+            tags$br(),
+            tags$br()
+        ))
+    }
+    args <- c(args, list(
+        DT::dataTableOutput(ns('table'))
+    ))
+    do.call(tagList, args)
 }
 
 
