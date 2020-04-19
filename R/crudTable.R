@@ -1,12 +1,58 @@
-#' Creates a data table view that allows to add new data, modify existent records or delete the records.
+#' Creates a data table view capable of CRUD operations.
+#'
+#' This shiny module allows to view data in a datatable and also add new data, modify existent records or
+#' delete the records. This UI widget consists of a \code{\link[DT]{datatable}} view, which contains buttons
+#' for editing and deleting of table rows, and an action button for the creation of new records.
+#'
+#' This function is the UI part of the module. For server part see \code{\link{crudTable}}.
 #'
 #' @param id The ID of the widget
 #' @param newButtonLabel Label of the button for adding of new records. If 'NULL', the button is not shown.
 #' @param newButtonIcon Icon of the button for adding of new records
 #' @param newButtonClass Class of the button for adding of new records
-#' @param newButtonWidth The width of the button, e.g. '400px' or '100%'
+#' @param newButtonWidth The width of the button, e.g. '400px' or '100\%'
 #' @return An editable data table widget
 #' @export
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(crudtable)
+#'
+#' # Create Data Access Object
+#' dao <- dataFrameDao(CO2)
+#'
+#' # Create edit form dialog
+#' formUI <- function(id) {
+#'     ns <- NS(id)
+#'     editDialog(id,
+#'                textInput(ns('Plant'), 'Plant'),
+#'                selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
+#'                selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),
+#'                numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]',
+#'                             value = 100, min = 50, max = 1000),
+#'                numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]',
+#'                             value = 0, min = 0, max = 100),
+#'     )
+#' }
+#'
+#' # Create edit form dialog handler
+#' formServer <- editDialogServer(dao$getAttributes())
+#'
+#' # User Interface
+#' ui <- fluidPage(
+#'     titlePanel('crudtable example'),
+#'     hr(),
+#'     crudTableUI('crud')
+#' )
+#'
+#' # Server-side
+#' server <- function(input, output, session) {
+#'     callModule(crudTable, 'crud', dao, formUI, formServer)
+#' }
+#'
+#' # Run the shiny app
+#' shinyApp(ui = ui, server = server)
+#' }
 crudTableUI <- function(id,
                         newButtonLabel = 'New Record',
                         newButtonIcon = icon('plus'),
@@ -54,8 +100,62 @@ crudTableUI <- function(id,
 }
 
 
-
+#' Server-part of the CRUD table view module
+#'
+#' This is the server part of the module. It handles all the CRUD operations on data. For new record or existing
+#' record editing, a modal dialog defined in 'formUI' and 'formServer' is opened. The data are accessed via
+#' the 'dao' structure.
+#'
+#' @param input Shiny server-part input object
+#' @param output Shiny server-part output object
+#' @param session Shiny server-part session object
+#' @param dao Data Access Object that provides the data handling operations, see e.g. \code{\link{sqlDao}}.
+#' @param formUI A function that creates the data editing modal dialog typically by calling the
+#'     \code{\link{editDialog}} function. See examples below.
+#' @param formServer A function that handles the actions performed in the 'formUI' edit dialog. Typically, it is
+#'     a function created with the \code{\link{editDialogServer}} factory. See examples below.
+#' @return Returns a reactive object that triggers on any data change within the CRUD table.
 #' @export
+#' @examples
+#' \dontrun{
+#' library(shiny)
+#' library(crudtable)
+#'
+#' # Create Data Access Object
+#' dao <- dataFrameDao(CO2)
+#'
+#' # Create edit form dialog
+#' formUI <- function(id) {
+#'     ns <- NS(id)
+#'     editDialog(id,
+#'                textInput(ns('Plant'), 'Plant'),
+#'                selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
+#'                selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),
+#'                numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]',
+#'                             value = 100, min = 50, max = 1000),
+#'                numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]',
+#'                             value = 0, min = 0, max = 100),
+#'     )
+#' }
+#'
+#' # Create edit form dialog handler
+#' formServer <- editDialogServer(dao$getAttributes())
+#'
+#' # User Interface
+#' ui <- fluidPage(
+#'     titlePanel('crudtable example'),
+#'     hr(),
+#'     crudTableUI('crud')
+#' )
+#'
+#' # Server-side
+#' server <- function(input, output, session) {
+#'     callModule(crudTable, 'crud', dao, formUI, formServer)
+#' }
+#'
+#' # Run the shiny app
+#' shinyApp(ui = ui, server = server)
+#' }
 crudTable <- function(input, output, session, dao, formUI, formServer) {
     ns <- session$ns
     dataChangedTrigger <- reactiveVal(0)
@@ -131,4 +231,6 @@ crudTable <- function(input, output, session, dao, formUI, formServer) {
                       selection = 'none',
                       escape = -1)  # escape HTML everywhere except the first column
     })
+
+    dataChangedTrigger
 }
