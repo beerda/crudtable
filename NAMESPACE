@@ -2,6 +2,7 @@
 
 export(crudTable)
 export(crudTableUI)
+export(dataFrameDao)
 export(editDialog)
 export(editDialogServer)
 export(is.dao)
