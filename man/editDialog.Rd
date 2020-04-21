@@ -14,14 +14,15 @@ editDialog(
 )
 }
 \arguments{
-\item{id}{Shiny module identifier of the edit dialog as set by the \code{\link{crudTable}}. (The id is based on
-the \code{\link{crudTable}}'s namespace and ends either with \code{"newForm"} or \code{"editForm"} accordingly
-to whether the dialog is used for new data input or existing data update.)}
+\item{id}{Shiny module identifier of the edit dialog as set by the \code{\link{crudTable}}.
+(The id is based on the \code{\link{crudTable}}'s namespace and ends either with
+\code{"newForm"} or \code{"editForm"} accordingly to whether the dialog is used for new data
+input or existing data update.)}
 
-\item{...}{The definition of the edit dialog, i.e. the shiny input elements whose IDs must be named after
-the attribute names, as expected by the DAO (see \code{\link{dataFrameDao}} or \code{\link{sqlDao}} for
-more information on Data Access Objects). IDs must also be namespaced, as need by the UI modules, see
-the example below.}
+\item{...}{The definition of the edit dialog, i.e. the shiny input elements whose IDs must be
+named after the attribute names, as expected by the DAO (see \code{\link{dataFrameDao}} or
+\code{\link{sqlDao}} for more information on Data Access Objects). IDs must also be namespaced,
+as need by the UI modules, see the example below.}
 
 \item{newTitle}{A dialog title used for new data input}
 
@@ -44,8 +45,10 @@ formUI <- function(id) {
               textInput(ns('Plant'), 'Plant'),
               selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
               selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),
-              numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]', value = 100, min = 50, max = 1000),
-              numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]', value = 0, min = 0, max = 100),
+              numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]',
+                           value = 100, min = 50, max = 1000),
+              numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]',
+                           value = 0, min = 0, max = 100),
    )
 }
 }

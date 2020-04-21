@@ -6,6 +6,9 @@
 \usage{
 dataFrameDao(d)
 }
+\arguments{
+\item{d}{A data frame to create DAO object for}
+}
 \description{
 DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}. This DAO stores
 internally the data into a data frame, that is, the data are NOT stored on the disk in any way.
