@@ -17,7 +17,7 @@
 #' }
 #'
 #' @param d A data frame to create DAO object for
-#' @value An S3 object of class \code{dao}, which is a list having as elements the functions
+#' @return An S3 object of class \code{dao}, which is a list having as elements the functions
 #'     described above
 #' @seealso sqlDao
 #' @export

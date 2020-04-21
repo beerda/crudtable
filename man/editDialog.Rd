@@ -2,7 +2,8 @@
 % Please edit documentation in R/editDialog.R
 \name{editDialog}
 \alias{editDialog}
-\title{Edit dialog for the create and update operations of the \code{\link{crudTable}}}
+\title{UI part of the edit dialog module for the create and update operations of
+the \code{\link{crudTable}}}
 \usage{
 editDialog(
   id,
@@ -33,7 +34,8 @@ as need by the UI modules, see the example below.}
 \item{cancelLabel}{Label of the cancel button}
 }
 \description{
-Edit dialog for the create and update operations of the \code{\link{crudTable}}
+UI part of the edit dialog module for the create and update operations of
+the \code{\link{crudTable}}
 }
 \examples{
 \dontrun{

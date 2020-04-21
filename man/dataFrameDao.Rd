@@ -9,6 +9,10 @@ dataFrameDao(d)
 \arguments{
 \item{d}{A data frame to create DAO object for}
 }
+\value{
+An S3 object of class \code{dao}, which is a list having as elements the functions
+    described above
+}
 \description{
 DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}. This DAO stores
 internally the data into a data frame, that is, the data are NOT stored on the disk in any way.

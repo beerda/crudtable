@@ -1,4 +1,33 @@
+#' A Data Access Object (DAO) that uses the DBI interface to access the data.
+#'
+#' DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}.
+#' This DAO uses DBI to store the data. The DBI table accessed with this DAO object must not
+#' contain the 'id' attribute, as it is internally created from the DBI's 'rowid' attribute.
+#'
+#' See \code{\link{dataFrameDao}} for more details on Data Access Objects.
+#'
+#' @param con A DBI connection
+#' @param table A character string of the name of the table to be accessed
+#' @param attributes A character string of attribute names to be handled by this DAO.
+#' @return A DAO object, i.e. a list of functions for CRUD operations on the DBI table as
+#'     neeeded by the \code{\link{crudTable}} module
 #' @export
+#' @examples
+#' \dontrun{
+#' library(DBI)
+#' library(RSQLite)
+#'
+#' # Create an in-memory database
+#' con <- dbConnect(RSQLite::SQLite(), ":memory:")
+#'
+#' # Create CO2 data table from the CO2 data frame
+#' dbWriteTable(con, 'CO2', as.data.frame(CO2[1:5, ]))
+#'
+#' # Create Data Access Object
+#' dao <- sqlDao(con,
+#'               table = 'CO2',
+#'               attributes = c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
+#' }
 sqlDao <- function(con, table, attributes) {
     assert_that(is.character(table) && is.scalar(table))
     assert_that(is.character(attributes))

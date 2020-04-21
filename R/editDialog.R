@@ -1,4 +1,5 @@
-#' Edit dialog for the create and update operations of the \code{\link{crudTable}}
+#' UI part of the edit dialog module for the create and update operations of
+#' the \code{\link{crudTable}}
 #'
 #' @param id Shiny module identifier of the edit dialog as set by the \code{\link{crudTable}}.
 #'     (The id is based on the \code{\link{crudTable}}'s namespace and ends either with
