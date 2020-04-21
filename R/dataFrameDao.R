@@ -17,7 +17,7 @@ dataFrameDao <- function(d) {
 
         getRecord = function(id) {
             assert_that(is.scalar(id) && is.numeric(id))
-            data[data$id == id, ]
+            as.list(data[data$id == id, ])
         },
 
         insert = function(record) {

@@ -2,6 +2,7 @@ test_that("dataFrameDao::getAttributes", {
     d <- CO2[1:5, ]
     dao <- dataFrameDao(d)
 
+    expect_true(is.dao(dao))
     expect_equal(dao$getAttributes(), c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
 })
 
@@ -28,7 +29,7 @@ test_that("dataFrameDao::getRecord", {
     d <- CO2[1:5, ]
     dao <- dataFrameDao(d)
 
-    expect_equal(dao$getRecord(2), cbind(id=2, CO2[2, ]))
+    expect_equal(dao$getRecord(2), as.list(cbind(id=2, CO2[2, ])))
 })
 
 
