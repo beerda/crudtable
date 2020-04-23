@@ -21,7 +21,7 @@ dao <- sqlDao(con,
 # Create edit form dialog
 formUI <- function(id) {
     ns <- NS(id)
-    editDialog(id,
+    editDialogUI(id,
         textInput(ns('Plant'), 'Plant'),
         selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
         selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),

@@ -33,11 +33,11 @@
 #' }
 #' @seealso crudTable
 #' @export
-editDialog <- function(id, ...,
-                       newTitle = 'New',
-                       editTitle = 'Edit',
-                       submitLabel = 'Submit',
-                       cancelLabel = 'Cancel') {
+editDialogUI <- function(id, ...,
+                         newTitle = 'New',
+                         editTitle = 'Edit',
+                         submitLabel = 'Submit',
+                         cancelLabel = 'Cancel') {
     ns <- NS(id)
     title <- ifelse(endsWith(id, '-newForm'), newTitle, editTitle)
     modalDialog(...,
