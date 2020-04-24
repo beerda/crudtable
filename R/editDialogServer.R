@@ -27,11 +27,13 @@ editDialogServer <- function(attributes, na=NULL, naMsg='Must not be empty.') {
         result <- list(trigger = reactiveVal(0),
                        record = reactiveVal(NULL))
 
-        observeEvent(result$record(), {
+        observe({
             rec <- result$record()
-            for (colid in attributes) {
-                # update value of the input UI
-                session$sendInputMessage(colid, list(value = rec[[colid]]))
+            if (!is.null(rec)) {
+                for (colid in attributes) {
+                    # update value of the input UI
+                    session$sendInputMessage(colid, list(value = rec[[colid]]))
+                }
             }
         })
 

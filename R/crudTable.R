@@ -111,6 +111,10 @@ crudTable <- function(input, output, session, dao, formUI, formServer) {
 
     observeEvent(input$editId, {
         id <- input$editId
+
+         # if opened twice the same id, this forces to reload the correct values into the form
+        editForm$record(NULL)
+
         editForm$record(dao$getRecord(id))
         showModal(formUI(ns('editForm')))
     })
