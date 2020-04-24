@@ -4,7 +4,7 @@
 \alias{sqlDao}
 \title{A Data Access Object (DAO) that uses the DBI interface to access the data.}
 \usage{
-sqlDao(con, table, attributes)
+sqlDao(con, table)
 }
 \arguments{
 \item{con}{A DBI connection}
@@ -38,7 +38,6 @@ dbWriteTable(con, 'CO2', as.data.frame(CO2[1:5, ]))
 
 # Create Data Access Object
 dao <- sqlDao(con,
-              table = 'CO2',
-              attributes = c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
+              table = 'CO2')
 }
 }

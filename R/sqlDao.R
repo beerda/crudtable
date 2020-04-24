@@ -25,13 +25,12 @@
 #'
 #' # Create Data Access Object
 #' dao <- sqlDao(con,
-#'               table = 'CO2',
-#'               attributes = c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
+#'               table = 'CO2')
 #' }
-sqlDao <- function(con, table, attributes) {
+sqlDao <- function(con, table) {
     assert_that(is.character(table) && is.scalar(table))
-    assert_that(is.character(attributes))
 
+    attributes <- dbListFields(con, table)
     attrlist <- paste0(attributes, collapse = ', ')
 
     dataQuery <- paste0('SELECT rowid as id, ', attrlist, ' FROM ', table)

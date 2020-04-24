@@ -14,9 +14,7 @@ shiny::onStop(function() { dbDisconnect(con) })
 dbWriteTable(con, 'CO2', as.data.frame(CO2[1:5, ]))
 
 # Create Data Access Object
-dao <- sqlDao(con,
-              table = 'CO2',
-              attributes = c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
+dao <- sqlDao(con, table = 'CO2')
 
 # Create edit form dialog
 formUI <- function(id) {
