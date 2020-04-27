@@ -16,11 +16,12 @@ editDialogServer <- function(attributes,
     assert_that(is.character(attributes))
     assert_that(is.list(validators))
 
-    function(input, output, session) {
-        result <- list(trigger = reactiveVal(0),
+    function(input, output, session, ...) {
+        result <- list(saveTrigger = reactiveVal(0),
+                       loadTrigger = reactiveVal(0),
                        record = reactiveVal(NULL))
 
-        observe({
+        observeEvent(result$loadTrigger(), ignoreInit = TRUE, {
             rec <- result$record()
             if (!is.null(rec)) {
                 for (colid in attributes) {
@@ -65,7 +66,7 @@ editDialogServer <- function(attributes,
             record <- map(attributes, function(p) { input[[p]] })
             names(record) <- attributes
             result$record(record)
-            result$trigger(result$trigger() + 1)
+            result$saveTrigger(result$saveTrigger() + 1)
             removeModal()
         })
 

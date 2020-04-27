@@ -26,6 +26,7 @@ dbWriteTable(con, 'invoice', df)
 # Create Data Access Object
 dao <- sqlDao(con, table = 'invoice')
 
+
 # Create edit form dialog
 formUI <- function(id) {
     ns <- NS(id)
@@ -44,6 +45,7 @@ formUI <- function(id) {
     )
 }
 
+
 # Create standard edit form dialog handler that will be used in a custom handler
 handler <- editDialogServer(
     attributes = dao$getAttributes(),
@@ -55,10 +57,18 @@ handler <- editDialogServer(
     )
 )
 
+
 # Create custom edit form dialog handler
 formServer <- function(input, output, session) {
-    # compute some input values
+    # first do the default behaviour
+    res <- handler(input, output, session)
+
+    # then compute some input values
     observe({
+        # must observe the load trigger to ensure the re-computation after data loading
+        res$loadTrigger()
+
+        # now we can compute some inputs
         service <- input$service
         amount <- input$amount
         discount <- input$discount
@@ -70,9 +80,10 @@ formServer <- function(input, output, session) {
         }
     })
 
-    # return the result of handler
-    handler(input, output, session)
+    # return the result of the default handler
+    res
 }
+
 
 # User Interface
 ui <- fluidPage(
@@ -81,6 +92,7 @@ ui <- fluidPage(
     hr(),
     crudTableUI('crud')
 )
+
 
 # Server-side
 server <- function(input, output, session) {

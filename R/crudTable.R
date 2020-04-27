@@ -94,13 +94,14 @@ crudTable <- function(input, output, session, dao, formUI, formServer) {
 
     # ---- new record ------------------------------------------
 
+    newForm <- callModule(formServer, 'newForm')
+
     observeEvent(input$newButton, {
+        newForm$loadTrigger(newForm$loadTrigger() + 1)
         showModal(formUI(ns('newForm')))
     })
 
-    newForm <- callModule(formServer, 'newForm')
-
-    observeEvent(newForm$trigger(), ignoreInit = TRUE, {
+    observeEvent(newForm$saveTrigger(), ignoreInit = TRUE, {
         dao$insert(newForm$record())
         dataChangedTrigger(dataChangedTrigger() + 1)
     })
@@ -111,15 +112,12 @@ crudTable <- function(input, output, session, dao, formUI, formServer) {
 
     observeEvent(input$editId, {
         id <- input$editId
-
-         # if opened twice the same id, this forces to reload the correct values into the form
-        editForm$record(NULL)
-
         editForm$record(dao$getRecord(id))
+        editForm$loadTrigger(editForm$loadTrigger() + 1)
         showModal(formUI(ns('editForm')))
     })
 
-    observeEvent(editForm$trigger(), ignoreInit = TRUE, {
+    observeEvent(editForm$saveTrigger(), ignoreInit = TRUE, {
         dao$update(input$editId, editForm$record())
         dataChangedTrigger(dataChangedTrigger() + 1)
     })
