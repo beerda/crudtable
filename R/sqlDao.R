@@ -30,7 +30,7 @@
 sqlDao <- function(con, table) {
     assert_that(is.character(table) && is.scalar(table))
 
-    attributes <- dbListFields(con, table)
+    attributes <- DBI::dbListFields(con, table)
     attrlist <- paste0(attributes, collapse = ', ')
 
     dataQuery <- paste0('SELECT rowid as id, ', attrlist, ' FROM ', table)

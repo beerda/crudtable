@@ -3,7 +3,7 @@ test_that("sqlDao", {
     con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
     DBI::dbWriteTable(con, 'test', data)
 
-    dao <- sqlDao(con, 'test', c('title', 'value'))
+    dao <- sqlDao(con, 'test')
     expect_true(is.list(dao))
     expect_true(inherits(dao, 'dao'))
     expect_true(is.dao(dao))
