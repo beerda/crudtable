@@ -23,10 +23,11 @@
 #' @param session Shiny server-part session object
 #' @param dao Data Access Object that provides the data handling operations, see e.g. \code{\link{sqlDao}}.
 #' @param formUI A function that creates the data editing modal dialog typically by calling the
-#'     \code{\link{editDialog}} function. See examples below.
+#'     \code{\link{editDialogUI}} function. See examples below.
 #' @param formServer A function that handles the actions performed in the 'formUI' edit dialog. Typically, it is
 #'     a function created with the \code{\link{editDialogServer}} factory. See examples below.
 #' @return Returns a reactive object that triggers on any data change within the CRUD table.
+#' @seealso crudTableUI
 #' @export
 #' @examples
 #' \dontrun{

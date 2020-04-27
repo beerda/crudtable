@@ -42,5 +42,5 @@ dao$delete(1)
 print(dao$getData)
 }
 \seealso{
-sqlDao
+sqlDao, is.dao
 }

@@ -8,9 +8,9 @@
 #'
 #' @param con A DBI connection
 #' @param table A character string of the name of the table to be accessed
-#' @param attributes A character string of attribute names to be handled by this DAO.
 #' @return A DAO object, i.e. a list of functions for CRUD operations on the DBI table as
 #'     neeeded by the \code{\link{crudTable}} module
+#' @seealso dataFrameDao, is.dao
 #' @export
 #' @examples
 #' \dontrun{

@@ -12,6 +12,7 @@
 #' @param newButtonClass Class of the button for adding of new records
 #' @param newButtonWidth The width of the button, e.g. '400px' or '100\%'
 #' @return An editable data table widget
+#' @seealso crudTable
 #' @export
 #' @examples
 #' \dontrun{

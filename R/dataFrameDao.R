@@ -19,7 +19,7 @@
 #' @param d A data frame to create DAO object for
 #' @return An S3 object of class \code{dao}, which is a list having as elements the functions
 #'     described above
-#' @seealso sqlDao
+#' @seealso sqlDao, is.dao
 #' @export
 #' @examples
 #' d <- CO2[1:5, ]

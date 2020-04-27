@@ -10,8 +10,6 @@ sqlDao(con, table)
 \item{con}{A DBI connection}
 
 \item{table}{A character string of the name of the table to be accessed}
-
-\item{attributes}{A character string of attribute names to be handled by this DAO.}
 }
 \value{
 A DAO object, i.e. a list of functions for CRUD operations on the DBI table as
@@ -40,4 +38,7 @@ dbWriteTable(con, 'CO2', as.data.frame(CO2[1:5, ]))
 dao <- sqlDao(con,
               table = 'CO2')
 }
+}
+\seealso{
+dataFrameDao, is.dao
 }

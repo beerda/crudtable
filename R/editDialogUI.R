@@ -31,7 +31,7 @@
 #'    )
 #' }
 #' }
-#' @seealso crudTable
+#' @seealso editDialogServer, crudTable
 #' @export
 editDialogUI <- function(id, ...,
                          newTitle = 'New',

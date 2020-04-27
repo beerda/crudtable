@@ -9,15 +9,31 @@ editDialogServer(attributes, validators = list())
 }
 \arguments{
 \item{attributes}{A character vector of attribute names that correspond to IDs of shiny
-inputs (as created in the \code{\link{editDialog}}) and as expected by the underlying
-DAO}
+inputs (as created in the \code{\link{editDialogUI}}) and as expected by the underlying
+DAO.}
+
+\item{validators}{A list of validators that validate the user input and show an error message
+(see \code{\link{validator}}).}
 }
 \value{
-A function that is used by shiny to handle the inputs of the edit dialog.
+A function that is used by shiny to handle the inputs of the edit dialog. The
+    returned function expects three arguments: \code{input}, \code{output} and \code{session}.
+    It returns a list of three reactive values:
+    \itemize{
+        \item \code{saveTrigger}, which triggers by this function on submit of the edit dialog,
+             after the dialog data are stored into the \code{record} reactive value;
+        \item \code{loadTrigger}, which expects to be triggerred by \code{\link{crudTable}}
+             after the form data are prepared in the \code{record} reactive value
+             in order to load them into the form;
+        \item \code{record} the list of data values to be passed to/from the form.
+    }
 }
 \description{
 The result of the call is a function that handles the edit dialog on the server part of the
 shiny application. Its purpose is to be passed as the 'formServer' argument of the
 \code{\link{crudTable}} module. It handles the load and storing of record values that
 are persisted via the \code{\link{crudTable}}'s DAO.
+}
+\seealso{
+editDialogUI, crudTable, validator
 }

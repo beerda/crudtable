@@ -56,5 +56,5 @@ formUI <- function(id) {
 }
 }
 \seealso{
-crudTable
+editDialogServer, crudTable
 }

@@ -16,7 +16,7 @@ crudTable(input, output, session, dao, formUI, formServer)
 \item{dao}{Data Access Object that provides the data handling operations, see e.g. \code{\link{sqlDao}}.}
 
 \item{formUI}{A function that creates the data editing modal dialog typically by calling the
-\code{\link{editDialog}} function. See examples below.}
+\code{\link{editDialogUI}} function. See examples below.}
 
 \item{formServer}{A function that handles the actions performed in the 'formUI' edit dialog. Typically, it is
 a function created with the \code{\link{editDialogServer}} factory. See examples below.}
@@ -69,4 +69,7 @@ server <- function(input, output, session) {
 # Run the shiny app
 shinyApp(ui = ui, server = server)
 }
+}
+\seealso{
+crudTableUI
 }
