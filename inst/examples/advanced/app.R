@@ -50,7 +50,8 @@ handler <- editDialogServer(
     validators = c(
         validate('amount',
                  'Amount must be odd',
-                 function(v) { !is.null(v) && !is.na(v) && v %% 2 != 0 })
+                 function(v) { !is.null(v) && !is.na(v) && v %% 2 != 0 }),
+        validateNotNA(dao$getAttributes())
     )
 )
 

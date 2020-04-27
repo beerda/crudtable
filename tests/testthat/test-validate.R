@@ -12,8 +12,8 @@ test_that("validate", {
 })
 
 
-test_that("validateNA", {
-    v <- validateNA(letters[1:3])
+test_that("validateNotNA", {
+    v <- validateNotNA(letters[1:3])
     expect_true(is.list(v))
     expect_equal(length(v), 3)
     expect_equal(names(v), letters[1:3])

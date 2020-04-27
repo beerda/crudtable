@@ -14,7 +14,7 @@ validate <- function(inputIds, errorMessages, f) {
 }
 
 #' @export
-validateNA <- function(inputIds, errorMessages = 'Must not be empty.') {
+validateNotNA <- function(inputIds, errorMessages = 'Must not be empty.') {
     validate(inputIds,
              errorMessages,
              function(v) {
