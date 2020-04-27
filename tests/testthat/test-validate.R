@@ -22,7 +22,9 @@ test_that("validateNotNA", {
     expect_true(v[[1]]$f(123))
     expect_true(v[[1]]$f(FALSE))
     expect_true(v[[1]]$f(1:3))
+
     expect_false(v[[1]]$f(NULL))
     expect_false(v[[1]]$f(NA))
     expect_false(v[[1]]$f(''))
+    expect_false(v[[1]]$f(c(1:3, NA)))
 })

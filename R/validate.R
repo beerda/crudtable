@@ -18,6 +18,6 @@ validateNotNA <- function(inputIds, errorMessages = 'Must not be empty.') {
     validate(inputIds,
              errorMessages,
              function(v) {
-                 !is.null(v) && !is.na(v) && trimws(v) != ''
+                 !is.null(v) && all(!is.na(v)) && all(trimws(v) != '')
              })
 }
