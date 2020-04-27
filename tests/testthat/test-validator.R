@@ -1,7 +1,7 @@
 test_that("validator", {
     v <- validator(letters[1:3], LETTERS[1:3], is.na)
 
-    expect_true(is.list(v))
+    expect_true(is.validator(v))
     expect_equal(length(v), 3)
     expect_equal(names(v), letters[1:3])
 
@@ -20,7 +20,7 @@ test_that("validator", {
 test_that("filledValidator", {
     v <- filledValidator(letters[1:3])
 
-    expect_true(is.list(v))
+    expect_true(is.validator(v))
     expect_equal(length(v), 3)
     expect_equal(names(v), letters[1:3])
     expect_equal(class(v[[1]]), 'validator')
