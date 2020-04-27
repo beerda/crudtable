@@ -40,6 +40,10 @@ editDialogServer <- function(attributes,
                     err <- errors()
                     errMsg <- validators[[nn]][['errorMessage']]
                     invalid <- !validators[[nn]][['f']](v)
+                    if (!is.logical(invalid) || is.null(invalid) || is.na(invalid)) {
+                        warning('Ignoring "', nn, '" validator\'s non-logical result: ', invalid)
+                        invalid <- FALSE
+                    }
                     shinyFeedback::feedbackDanger(session$ns(nn), invalid, errMsg)
                     err[nn] <- invalid
                     errors(err)
