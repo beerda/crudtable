@@ -45,7 +45,11 @@ formUI <- function(id) {
 }
 
 # Create standard edit form dialog handler that will be used in a custom handler
-handler <- editDialogServer(dao$getAttributes())
+handler <- editDialogServer(
+    attributes = dao$getAttributes(),
+    validators = c(
+        validate('amount', 'Amount must be odd', function(v) is.null(v) || v %% 2 != 0)
+    ))
 
 # Create custom edit form dialog handler
 formServer <- function(input, output, session) {
@@ -60,6 +64,8 @@ formServer <- function(input, output, session) {
             updateNumericInput(session, 'total', value = total)
         }
     })
+
+    # return the result of handler
     handler(input, output, session)
 }
 

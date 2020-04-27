@@ -5,17 +5,12 @@
 \title{Server part of the edit dialog module for the create and update operations of
 the \code{\link{crudTable}}}
 \usage{
-editDialogServer(attributes, na = NULL, naMsg = "Must not be empty.")
+editDialogServer(attributes, validators = list())
 }
 \arguments{
 \item{attributes}{A character vector of attribute names that correspond to IDs of shiny
 inputs (as created in the \code{\link{editDialog}}) and as expected by the underlying
 DAO}
-
-\item{na}{A character vector of attribute names which are allowed to be empty.}
-
-\item{naMsg}{An error message shown on submit of empty element that is not listed in the 'na'
-argument.}
 }
 \value{
 A function that is used by shiny to handle the inputs of the edit dialog.

@@ -9,19 +9,11 @@
 #' @param attributes A character vector of attribute names that correspond to IDs of shiny
 #'     inputs (as created in the \code{\link{editDialog}}) and as expected by the underlying
 #'     DAO
-#' @param na A character vector of attribute names which are allowed to be empty.
-#' @param naMsg An error message shown on submit of empty element that is not listed in the 'na'
-#'     argument.
 #' @return A function that is used by shiny to handle the inputs of the edit dialog.
 #' @export
-editDialogServer <- function(attributes, na=NULL, naMsg='Must not be empty.') {
+editDialogServer <- function(attributes,
+                             validators = list()) {
     assert_that(is.character(attributes))
-    if (!is.null(na)) {
-        assert_that(is.character(na))
-        assert_that(length(setdiff(na, attributes)) == 0)
-    }
-
-    nona <- setdiff(attributes, na)
 
     function(input, output, session) {
         result <- list(trigger = reactiveVal(0),
@@ -37,17 +29,18 @@ editDialogServer <- function(attributes, na=NULL, naMsg='Must not be empty.') {
             }
         })
 
-        errors <- rep(FALSE, length(nona))
-        names(errors) <- nona
+        errors <- rep(FALSE, length(validators))
+        names(errors) <- names(validators)
         errors <- reactiveVal(errors)
-        for (n in nona) {
+        for (n in names(validators)) {
             local({
                 nn <- n
                 observeEvent(input[[nn]], {
                     v <- input[[nn]]
                     err <- errors()
-                    invalid <- is.null(v) || is.na(v) || trimws(v) == ''
-                    shinyFeedback::feedbackDanger(session$ns(nn), invalid, naMsg)
+                    errMsg <- validators[[nn]][['errorMessage']]
+                    invalid <- !validators[[nn]][['f']](v)
+                    shinyFeedback::feedbackDanger(session$ns(nn), invalid, errMsg)
                     err[nn] <- invalid
                     errors(err)
                 }, ignoreNULL=FALSE)
