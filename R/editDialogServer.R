@@ -14,6 +14,7 @@
 editDialogServer <- function(attributes,
                              validators = list()) {
     assert_that(is.character(attributes))
+    assert_that(is.list(validators))
 
     function(input, output, session) {
         result <- list(trigger = reactiveVal(0),

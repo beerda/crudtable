@@ -48,8 +48,11 @@ formUI <- function(id) {
 handler <- editDialogServer(
     attributes = dao$getAttributes(),
     validators = c(
-        validate('amount', 'Amount must be odd', function(v) !is.null(v) && !is.na(v) && v %% 2 != 0)
-    ))
+        validate('amount',
+                 'Amount must be odd',
+                 function(v) { !is.null(v) && !is.na(v) && v %% 2 != 0 })
+    )
+)
 
 # Create custom edit form dialog handler
 formServer <- function(input, output, session) {
