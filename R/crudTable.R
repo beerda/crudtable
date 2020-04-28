@@ -74,8 +74,8 @@ crudTable <- function(input,
                       output,
                       session,
                       dao,
-                      formUI,
-                      formServer = editDialogServer(dao$getAttributes())) {
+                      formUI = simpleFormUIFactory(dao),
+                      formServer = formServerFactory(dao)) {
     ns <- session$ns
     dataChangedTrigger <- reactiveVal(0)
 
