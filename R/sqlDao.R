@@ -41,10 +41,18 @@ sqlDao <- function(con, table) {
                           paste0(attributes, '=$', seq_along(attributes), collapse = ', '),
                           ' WHERE rowid = $', length(attributes) + 1)
     deleteQuery <- paste0('DELETE FROM ', table, ' WHERE rowid = ?')
+    infoQuery <- paste0('SELECT ', attrlist, ' FROM ', table, ' LIMIT 0')
+
+    res <- DBI::dbSendQuery(con, infoQuery)
+    info <- DBI::dbColumnInfo(res)
+    DBI::dbClearResult(res)
+    types <- info$type
+    names(types) <- info$name
+    rm(info)
 
     structure(list(
         getAttributes = function() {
-            attributes
+            types
         },
 
         getData = function() {

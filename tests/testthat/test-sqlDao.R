@@ -9,6 +9,8 @@ test_that("sqlDao", {
     expect_true(is.dao(dao))
     expect_false(is.dao(list()))
 
+    expect_equal(dao$getAttributes(),
+                 c(title='character', value='double'))
     expect_equal(dao$getData(),
                  data.frame(id=1:5, title=letters[1:5], value=2 * 1:5, stringsAsFactors = FALSE))
     expect_equal(dao$getRecord(3),
