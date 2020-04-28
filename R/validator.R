@@ -9,7 +9,8 @@
 #' @param f a validation function that expects a single input argument and returns \code{TRUE} if
 #'     the given input is valid. Note that this function must handle correctly the \code{NULL}
 #'     value as well as the \code{NA} value.
-#' @return A list of instances of the S3 class \code{validator}.
+#' @return A list of instances of the S3 class \code{validator}. The size of the resulting list
+#'     equals to the number of input IDs in 'inputIds'.
 #' @seealso filledValidator, editDialogServer
 #' @examples
 #' \dontrun{

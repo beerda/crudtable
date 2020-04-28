@@ -17,7 +17,8 @@ the given input is valid. Note that this function must handle correctly the \cod
 value as well as the \code{NA} value.}
 }
 \value{
-A list of instances of the S3 class \code{validator}.
+A list of instances of the S3 class \code{validator}. The size of the resulting list
+    equals to the number of input IDs in 'inputIds'.
 }
 \description{
 Validators are typically passed to the \code{\link{editDialogServer}} function that
