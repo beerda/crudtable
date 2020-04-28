@@ -1,33 +1,31 @@
-#' Server part of the edit dialog module for the create and update operations of
-#' the \code{\link{crudTable}}
+#' A factory that creates a server-side function that handles the \code{\link{formUI}}.
 #'
-#' The result of the call is a function that handles the edit dialog on the server part of the
-#' shiny application. Its purpose is to be passed as the 'formServer' argument of the
-#' \code{\link{crudTable}} module. It handles the load and storing of record values that
-#' are persisted via the \code{\link{crudTable}}'s DAO.
+#' This factory creates a function that handles the server-side functionality of the
+#' \code{\link{formUI}}. It is responsible for loading data into the form for editing, collecting
+#' the data after submitting them by the user and validating the user input.
 #'
-#' @param attributes A character vector of attribute names that correspond to IDs of shiny
-#'     inputs (as created in the \code{\link{editDialogUI}}) and as expected by the underlying
-#'     DAO.
-#' @param validators A list of validators that validate the user input and show an error message
-#'     (see \code{\link{validator}}).
-#' @return A function that is used by shiny to handle the inputs of the edit dialog. The
-#'     returned function expects three arguments: \code{input}, \code{output} and \code{session}.
-#'     It returns a list of three reactive values:
-#'     \itemize{
-#'         \item \code{saveTrigger}, which triggers by this function on submit of the edit dialog,
-#'              after the dialog data are stored into the \code{record} reactive value;
-#'         \item \code{loadTrigger}, which expects to be triggerred by \code{\link{crudTable}}
-#'              after the form data are prepared in the \code{record} reactive value
-#'              in order to load them into the form;
-#'         \item \code{record} the list of data values to be passed to/from the form.
-#'     }
-#' @seealso editDialogUI, crudTable, validator
+#' The purpose of the created function is to be passed as the 'formServer' argument for the
+#' \code{\link{crudTable}} module.
+#'
+#' @param dao A data access object (DAO), see \code{\link{dao}}, whose attributes are to be obtained
+#'   from the form and provide to the \code\{link{crudtable}}.
+#' @param validators A list of validators that validate the user input and show an error message,
+#'   see \code{\link{validator}}.
+#' @return A function that is used by shiny to handle the inputs of the form. The returned function
+#'   expects three arguments: \code{input}, \code{output} and \code{session}. It returns a list of
+#'   three reactive values: \itemize{ \item \code{saveTrigger}, which triggers by this function on
+#'   submit of the form, after the data are stored into the \code{record} reactive value; \item
+#'   \code{loadTrigger}, which expects to be triggerred by \code{\link{crudTable}} after the form
+#'   data are prepared in the \code{record} reactive value in order to load them into the form;
+#'   \item \code{record} the list of data values to be passed to/from the form. }
+#' @seealso formUI, crudTable, validator
 #' @export
-editDialogServer <- function(attributes,
-                             validators = list()) {
-    assert_that(is.character(attributes))
+formServerFactory <- function(dao,
+                              validators = list()) {
+    assert_that(is.dao(dao))
     assert_that(is.validator(validators))
+
+    attributes <- dao$getAttributes()
 
     function(input, output, session) {
         result <- list(saveTrigger = reactiveVal(0),
