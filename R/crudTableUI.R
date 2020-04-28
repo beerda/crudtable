@@ -1,13 +1,15 @@
 #' Creates a data table view capable of CRUD operations.
 #'
-#' This shiny module allows to view data in a datatable and also add new data, modify existent records or
-#' delete the records. This UI widget consists of a \code{\link[DT]{datatable}} view, which contains buttons
-#' for editing and deleting of table rows, and an action button for the creation of new records.
+#' This shiny module allows to view data in a datatable and also add new data, modify existent
+#' records or delete the records. This UI widget consists of a \code{\link[DT]{datatable}} view,
+#' which contains buttons for editing and deleting of table rows, and an action button for the
+#' creation of new records.
 #'
 #' This function is the UI part of the module. For server part see \code{\link{crudTable}}.
 #'
 #' @param id The ID of the widget
-#' @param newButtonLabel Label of the button for adding of new records. If 'NULL', the button is not shown.
+#' @param newButtonLabel Label of the button for adding of new records. If 'NULL', the button is not
+#'   shown.
 #' @param newButtonIcon Icon of the button for adding of new records
 #' @param newButtonClass Class of the button for adding of new records
 #' @param newButtonWidth The width of the button, e.g. '400px' or '100\%'

@@ -15,7 +15,8 @@ crudTableUI(
 \arguments{
 \item{id}{The ID of the widget}
 
-\item{newButtonLabel}{Label of the button for adding of new records. If 'NULL', the button is not shown.}
+\item{newButtonLabel}{Label of the button for adding of new records. If 'NULL', the button is not
+shown.}
 
 \item{newButtonIcon}{Icon of the button for adding of new records}
 
@@ -27,9 +28,10 @@ crudTableUI(
 An editable data table widget
 }
 \description{
-This shiny module allows to view data in a datatable and also add new data, modify existent records or
-delete the records. This UI widget consists of a \code{\link[DT]{datatable}} view, which contains buttons
-for editing and deleting of table rows, and an action button for the creation of new records.
+This shiny module allows to view data in a datatable and also add new data, modify existent
+records or delete the records. This UI widget consists of a \code{\link[DT]{datatable}} view,
+which contains buttons for editing and deleting of table rows, and an action button for the
+creation of new records.
 }
 \details{
 This function is the UI part of the module. For server part see \code{\link{crudTable}}.

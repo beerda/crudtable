@@ -21,6 +21,7 @@
 #'     described above
 #' @seealso sqlDao, is.dao
 #' @export
+#' @aliases dao
 #' @examples
 #' d <- CO2[1:5, ]
 #' dao <- dataFrameDao(d)

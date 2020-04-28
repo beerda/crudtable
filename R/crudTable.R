@@ -12,20 +12,23 @@
 }
 
 
-#' Server-part of the CRUD table view module
+#' Server-part of the CRUD table module
 #'
-#' This is the server part of the module. It handles all the CRUD operations on data. For new record or existing
-#' record editing, a modal dialog defined in 'formUI' and 'formServer' is opened. The data are accessed via
-#' the 'dao' structure.
+#' This is the server-part of the module. It handles all the CRUD (Create, Read, Update, Delete)
+#' operations on data. For new or existing data input, a modal dialog is opened that is defined by
+#' the \code{formUI} and \code{formServer} arguments. The underlying data table is accessed via the
+#' \code{\link{dao}} object.
 #'
-#' @param input Shiny server-part input object
-#' @param output Shiny server-part output object
-#' @param session Shiny server-part session object
-#' @param dao Data Access Object that provides the data handling operations, see e.g. \code{\link{sqlDao}}.
-#' @param formUI A function that creates the data editing modal dialog typically by calling the
-#'     \code{\link{editDialogUI}} function. See examples below.
-#' @param formServer A function that handles the actions performed in the 'formUI' edit dialog. Typically, it is
-#'     a function created with the \code{\link{editDialogServer}} factory. See examples below.
+#' @param input The Shiny server-part input object
+#' @param output The Shiny server-part output object
+#' @param session The Shiny server-part session object
+#' @param dao Data Access Object (\code{\link{dao}}) that provides the data storage operations, see
+#'   e.g. \code{\link{sqlDao}} or \code{\link{dataFrameDao}}.
+#' @param formUI A function that creates the edit form for the user's data input. Typically, it
+#'   is a function based on \code{\link{formUI}}. See examples below.
+#' @param formServer A server-side function dual to the \code{formUI} argument that handles the
+#'   actions performed in the edit form. Typically, it is a function created with the
+#'   \code{\link{formServerFactory}}. See examples below.
 #' @return Returns a reactive object that triggers on any data change within the CRUD table.
 #' @seealso crudTableUI
 #' @export
@@ -38,38 +41,41 @@
 #' dao <- dataFrameDao(CO2)
 #'
 #' # Create edit form dialog
-#' formUI <- function(id) {
+#' myFormUI <- function(id) {
 #'     ns <- NS(id)
-#'     editDialog(id,
-#'                textInput(ns('Plant'), 'Plant'),
-#'                selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
-#'                selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),
-#'                numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]',
-#'                             value = 100, min = 50, max = 1000),
-#'                numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]',
-#'                             value = 0, min = 0, max = 100),
+#'     formUI(id,
+#'            textInput(ns('Plant'), 'Plant'),
+#'            selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
+#'            selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),
+#'            numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]',
+#'                         value = 100, min = 50, max = 1000),
+#'            numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]',
+#'                         value = 0, min = 0, max = 100),
 #'     )
 #' }
 #'
 #' # Create edit form dialog handler
-#' formServer <- editDialogServer(dao$getAttributes())
+#' myFormServer <- formServerFactory(dao)
 #'
 #' # User Interface
 #' ui <- fluidPage(
-#'     titlePanel('crudtable example'),
-#'     hr(),
 #'     crudTableUI('crud')
 #' )
 #'
 #' # Server-side
 #' server <- function(input, output, session) {
-#'     callModule(crudTable, 'crud', dao, formUI, formServer)
+#'     callModule(crudTable, 'crud', dao, myFormUI, myFormServer)
 #' }
 #'
 #' # Run the shiny app
 #' shinyApp(ui = ui, server = server)
 #' }
-crudTable <- function(input, output, session, dao, formUI, formServer) {
+crudTable <- function(input,
+                      output,
+                      session,
+                      dao,
+                      formUI,
+                      formServer = editDialogServer(dao$getAttributes())) {
     ns <- session$ns
     dataChangedTrigger <- reactiveVal(0)
 

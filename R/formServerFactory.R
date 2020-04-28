@@ -8,7 +8,7 @@
 #' \code{\link{crudTable}} module.
 #'
 #' @param dao A data access object (DAO), see \code{\link{dao}}, whose attributes are to be obtained
-#'   from the form and provide to the \code\{link{crudtable}}.
+#'   from the form and provide to the \code{\link{crudtable}}.
 #' @param validators A list of validators that validate the user input and show an error message,
 #'   see \code{\link{validator}}.
 #' @return A function that is used by shiny to handle the inputs of the form. The returned function

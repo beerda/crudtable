@@ -2,6 +2,7 @@
 % Please edit documentation in R/dataFrameDao.R
 \name{dataFrameDao}
 \alias{dataFrameDao}
+\alias{dao}
 \title{A Data Access Object (DAO) that stores the data in the internal data frame.}
 \usage{
 dataFrameDao(d)
