@@ -1,5 +1,3 @@
-# crudtable
-
 ![crudtable build on
 travis-ci.org](https://travis-ci.org/beerda/crudtable.svg?branch=master)
 ![crudtable build on
@@ -8,10 +6,12 @@ appveyor.com](https://ci.appveyor.com/api/projects/status/github/beerda/crudtabl
 coverage](https://codecov.io/gh/beerda/crudtable/branch/master/graph/badge.svg)
 ![crudtable in CRAN](http://www.r-pkg.org/badges/version/crudtable)
 
+# crudtable
+
 **crudtable** is an [R](https://www.r-project.org/) package that makes
-easy tabular data input in [Shiny](https://shiny.rstudio.com/) web
-applications. With **crudtable**, the following operations may be easily
-achieved:
+it easy to develop an editable data table in
+[Shiny](https://shiny.rstudio.com/) web applications. With
+**crudtable**, the following operations may be easily achieved:
 
   - *CRUD* - **C**reate, **R**read, **U**pdate and **D**elete of data
     records in
@@ -364,3 +364,5 @@ The complete advanced example is as follows:
     
     # Run the shiny app
     shinyApp(ui = ui, server = server)
+
+Enjoy.
