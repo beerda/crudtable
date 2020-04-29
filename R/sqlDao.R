@@ -45,7 +45,7 @@ sqlDao <- function(con, table) {
 
     res <- DBI::dbSendQuery(con, infoQuery)
     row <- DBI::dbFetch(res, n = 0)
-    types <- map_chr(row, mode)
+    types <- map(row, function(col) { list(type=mode(col)) })
     DBI::dbClearResult(res)
 
     structure(list(

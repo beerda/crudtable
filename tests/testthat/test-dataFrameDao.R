@@ -4,8 +4,14 @@ test_that("dataFrameDao::getAttributes", {
 
     expect_true(is.dao(dao))
     expect_equal(dao$getAttributes(),
-                 c(Plant='factor', Type='factor', Treatment='factor',
-                   conc='numeric', uptake='numeric'))
+                 list(Plant=list(type='factor',
+                                 levels=levels(d$Plant)),
+                      Type=list(type='factor',
+                                levels=levels(d$Type)),
+                      Treatment=list(type='factor',
+                                     levels=levels(d$Treatment)),
+                      conc=list(type='numeric'),
+                      uptake=list(type='numeric')))
 })
 
 

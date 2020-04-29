@@ -37,9 +37,13 @@ dataFrameDao <- function(d) {
     d <- as.data.frame(d)
     data <- cbind(id=seq_len(nrow(d)), d)
 
-    factors <- map_lgl(d, is.factor)
-    attributes <- map_chr(d, mode)
-    attributes[factors] <- 'factor'
+    attributes <- map(d, function(col) {
+        if (is.factor(col)) {
+            return(list(type='factor',
+                        levels=levels(col)))
+        }
+        list(type=mode(col))
+    })
 
     structure(list(
         getAttributes = function() {
