@@ -35,7 +35,7 @@ formServerFactory <- function(dao,
         observeEvent(result$loadTrigger(), ignoreInit = TRUE, {
             rec <- result$record()
             if (!is.null(rec)) {
-                for (colid in attributes) {
+                for (colid in names(attributes)) {
                     # update value of the input UI
                     session$sendInputMessage(colid, list(value = rec[[colid]]))
                 }
@@ -74,8 +74,8 @@ formServerFactory <- function(dao,
         })
 
         observeEvent(input$submit, {
-            record <- map(attributes, function(p) { input[[p]] })
-            names(record) <- attributes
+            record <- map(names(attributes), function(p) { input[[p]] })
+            names(record) <- names(attributes)
             result$record(record)
             result$saveTrigger(result$saveTrigger() + 1)
             removeModal()

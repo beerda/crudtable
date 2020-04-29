@@ -3,7 +3,9 @@ test_that("dataFrameDao::getAttributes", {
     dao <- dataFrameDao(d)
 
     expect_true(is.dao(dao))
-    expect_equal(dao$getAttributes(), c('Plant', 'Type', 'Treatment', 'conc', 'uptake'))
+    expect_equal(dao$getAttributes(),
+                 c(Plant='factor', Type='factor', Treatment='factor',
+                   conc='numeric', uptake='numeric'))
 })
 
 

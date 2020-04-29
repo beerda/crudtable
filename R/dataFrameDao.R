@@ -34,8 +34,12 @@ dataFrameDao <- function(d) {
     assert_that(is.data.frame(d))
     assert_that(all(colnames(d) != 'id'))
 
-    attributes <- colnames(d)
+    d <- as.data.frame(d)
     data <- cbind(id=seq_len(nrow(d)), d)
+
+    factors <- map_lgl(d, is.factor)
+    attributes <- map_chr(d, mode)
+    attributes[factors] <- 'factor'
 
     structure(list(
         getAttributes = function() {
@@ -53,7 +57,7 @@ dataFrameDao <- function(d) {
 
         insert = function(record) {
             assert_that(is.list(record))
-            assert_that(length(setdiff(attributes, names(record))) == 0)
+            assert_that(length(setdiff(names(attributes), names(record))) == 0)
             record$id <- max(data$id) + 1
             data <<- rbind(data, record[colnames(data)])
             invisible(1)
@@ -62,8 +66,8 @@ dataFrameDao <- function(d) {
         update = function(id, record) {
             assert_that(is.scalar(id) && is.numeric(id))
             assert_that(is.list(record))
-            assert_that(length(setdiff(attributes, names(record))) == 0)
-            data[data$id == id, attributes] <<- record[attributes]
+            assert_that(length(setdiff(names(attributes), names(record))) == 0)
+            data[data$id == id, names(attributes)] <<- record[names(attributes)]
             rownames(data) <<- NULL
             invisible(1)
         },

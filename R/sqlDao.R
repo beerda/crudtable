@@ -44,11 +44,9 @@ sqlDao <- function(con, table) {
     infoQuery <- paste0('SELECT ', attrlist, ' FROM ', table, ' LIMIT 0')
 
     res <- DBI::dbSendQuery(con, infoQuery)
-    info <- DBI::dbColumnInfo(res)
+    row <- DBI::dbFetch(res, n = 0)
+    types <- map_chr(row, mode)
     DBI::dbClearResult(res)
-    types <- info$type
-    names(types) <- info$name
-    rm(info)
 
     structure(list(
         getAttributes = function() {
