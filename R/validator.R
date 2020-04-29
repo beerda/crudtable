@@ -11,9 +11,10 @@
 #'     value as well as the \code{NA} value.
 #' @return A list of instances of the S3 class \code{validator}. The size of the resulting list
 #'     equals to the number of input IDs in 'inputIds'.
-#' @seealso \code{\link{filledValidator}}, \code{\link{editDialogServer}}
+#' @seealso \code{\link{filledValidator}}, \code{\link{formServerFactory}}
 #' @examples
 #'     validator('attr1',
+#'               'attr1 must be odd',
 #'               function(v) { !is.null(v) && !is.na(v) && v %% 2 != 0 })
 #' @export
 validator <- function(inputIds, errorMessages, f) {

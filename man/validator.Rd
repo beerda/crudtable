@@ -26,6 +26,7 @@ creates a server-part handler of the edit dialog.
 }
 \examples{
     validator('attr1',
+              'attr1 must be odd',
               function(v) { !is.null(v) && !is.na(v) && v \%\% 2 != 0 })
 }
 \seealso{
