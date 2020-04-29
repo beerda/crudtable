@@ -1,5 +1,12 @@
 # crudtable
 
+![crudtable build on travis-ci.org](https://travis-ci.org/beerda/crudtable.svg?branch=master)
+![crudtable build on appveyor.com](https://ci.appveyor.com/api/projects/status/github/beerda/crudtable?branch=master&amp;svg=true)
+![crudtable code coverage](https://codecov.io/gh/beerda/crudtable/branch/master/graph/badge.svg)
+![crudtable in CRAN](http://www.r-pkg.org/badges/version/crudtable)
+
+-----
+
 **crudtable** is an [R](https://www.r-project.org/) package that makes easy tabular data input in
 [Shiny](https://shiny.rstudio.com/) web applications. With **crudtable**, the following operations
 may be easily achieved:
