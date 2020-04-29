@@ -8,7 +8,7 @@ formServerFactory(dao, validators = list())
 }
 \arguments{
 \item{dao}{A data access object (DAO), see \code{\link{dao}}, whose attributes are to be obtained
-from the form and provide to the \code{\link{crudtable}}.}
+from the form and provide to the \code{\link{crudTable}}.}
 
 \item{validators}{A list of validators that validate the user input and show an error message,
 see \code{\link{validator}}.}
@@ -32,5 +32,5 @@ The purpose of the created function is to be passed as the 'formServer' argument
 \code{\link{crudTable}} module.
 }
 \seealso{
-formUI, crudTable, validator
+\code{\link{formUI}}, \code{\link{crudTable}}, \code{\link{validator}}
 }

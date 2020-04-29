@@ -14,12 +14,12 @@ vector is recycled as needed to match the length of \code{inputIds}}
 }
 \value{
 A list of instances of the S3 class \code{validator}. The size of the resulting list
-    equals to the number of input IDs in 'inputIds'.
+    equals to the number of input IDs in \code{inputIds}.
 }
 \description{
-This validator tests if the inputs given by 'inputIds' are not empty, i.e., non-null,
-non-NA and different from an empty string.
+This validator tests if the inputs given by \code{inputIds} are not empty, i.e., non-\code{NULL},
+non-\code{NA} and different from an empty string.
 }
 \seealso{
-validator
+\code{\link{validator}}
 }

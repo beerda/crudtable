@@ -30,7 +30,7 @@
 #'   actions performed in the edit form. Typically, it is a function created with the
 #'   \code{\link{formServerFactory}}. See examples below.
 #' @return Returns a reactive object that triggers on any data change within the CRUD table.
-#' @seealso crudTableUI
+#' @seealso \code{\link{crudTableUI}}
 #' @export
 #' @examples
 #' \dontrun{
@@ -44,13 +44,13 @@
 #' myFormUI <- function(id) {
 #'     ns <- NS(id)
 #'     formUI(id,
-#'            textInput(ns('Plant'), 'Plant'),
-#'            selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
-#'            selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),
-#'            numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]',
-#'                         value = 100, min = 50, max = 1000),
-#'            numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]',
-#'                         value = 0, min = 0, max = 100),
+#'             selectInput(ns('Plant'), 'Plant', choices = levels(CO2$Plant)),
+#'             selectInput(ns('Type'), 'Type', choices = levels(CO2$Type)),
+#'             selectInput(ns('Treatment'), 'Treatment', choices = levels(CO2$Treatment)),
+#'             numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]',
+#'                          value = 100, min = 50, max = 1000),
+#'             numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]',
+#'                          value = 0, min = 0, max = 100),
 #'     )
 #' }
 #'

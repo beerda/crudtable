@@ -1,6 +1,6 @@
 #' Defines a validation function and an error message for an edit dialog form input
 #'
-#' Validators are typically passed to the \code{\link{editDialogServer}} function that
+#' Validators are typically passed to the \code{\link{formServerFactory}} function that
 #' creates a server-part handler of the edit dialog.
 #'
 #' @param inputIds a vector of input IDs for the validation function \code{f} to be bound on
@@ -11,22 +11,10 @@
 #'     value as well as the \code{NA} value.
 #' @return A list of instances of the S3 class \code{validator}. The size of the resulting list
 #'     equals to the number of input IDs in 'inputIds'.
-#' @seealso filledValidator, editDialogServer
+#' @seealso \code{\link{filledValidator}}, \code{\link{editDialogServer}}
 #' @examples
-#' \dontrun{
-#'     # create a handler that ensures that attr1 is an odd number and that 'attr2' and 'attr3'
-#'     # are filled. (Note that instead of enumerating the attribute names, a DAO function
-#'     # "getAttributes()" may be called.)
-#'     handler <- editDialogServer(
-#'         attributes = c('attr1', 'attr2', 'attr3')
-#'         validators = c(
-#'             validator('attr1',
-#'                       'attr1 must be odd',
-#'                       function(v) { !is.null(v) && !is.na(v) && v %% 2 != 0 }),
-#'             filledValidator(c('attr2', 'attr3'))
-#'         )
-#'    )
-#' }
+#'     validator('attr1',
+#'               function(v) { !is.null(v) && !is.na(v) && v %% 2 != 0 })
 #' @export
 validator <- function(inputIds, errorMessages, f) {
     assert_that(is.character(inputIds))

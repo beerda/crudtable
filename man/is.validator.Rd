@@ -18,5 +18,5 @@ This function tests if \code{v} is a list of objects that are instances of the S
 scalar and a function 'f' as an element.
 }
 \seealso{
-validator, filledValidator
+\code{\link{validator}}, \code{\link{filledValidator}}
 }

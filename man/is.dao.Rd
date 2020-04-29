@@ -2,7 +2,7 @@
 % Please edit documentation in R/isDao.R
 \name{is.dao}
 \alias{is.dao}
-\title{Test whether the given object is a correct 'dao' class}
+\title{Test whether the given object is a correct \code{dao} class}
 \usage{
 is.dao(x)
 }
@@ -10,11 +10,11 @@ is.dao(x)
 \item{x}{An object to be tested}
 }
 \value{
-\code{TRUE} if 'x' is a valid DAO object.
+\code{TRUE} if \code{x} is a valid DAO object.
 }
 \description{
-Test whether the given object is a correct 'dao' class
+Test whether the given object is a correct \code{dao} class
 }
 \seealso{
-dataFrameDao, sqlDao
+\code{\link{dataFrameDao}}, \code{\link{sqlDao}}
 }

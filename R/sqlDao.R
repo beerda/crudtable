@@ -1,16 +1,16 @@
 #' A Data Access Object (DAO) that uses the DBI interface to access the data.
 #'
-#' DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}.
-#' This DAO uses DBI to store the data. The DBI table accessed with this DAO object must not
-#' contain the 'id' attribute, as it is internally created from the DBI's 'rowid' attribute.
+#' DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}. This
+#' DAO uses DBI to store the data. The DBI table accessed with this DAO object must not contain the
+#' \code{'id'} attribute, as it is internally created from the DBI's \code{'rowid'} attribute.
 #'
 #' See \code{\link{dataFrameDao}} for more details on Data Access Objects.
 #'
 #' @param con A DBI connection
 #' @param table A character string of the name of the table to be accessed
-#' @return A DAO object, i.e. a list of functions for CRUD operations on the DBI table as
-#'     neeeded by the \code{\link{crudTable}} module
-#' @seealso dataFrameDao, is.dao
+#' @return A DAO object, i.e. a list of functions for CRUD operations on the DBI table as neeeded by
+#'   the \code{\link{crudTable}} module
+#' @seealso \code{\link{dataFrameDao}}, \code{\link{is.dao}}
 #' @export
 #' @examples
 #' \dontrun{

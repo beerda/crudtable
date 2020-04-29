@@ -21,25 +21,13 @@ A list of instances of the S3 class \code{validator}. The size of the resulting 
     equals to the number of input IDs in 'inputIds'.
 }
 \description{
-Validators are typically passed to the \code{\link{editDialogServer}} function that
+Validators are typically passed to the \code{\link{formServerFactory}} function that
 creates a server-part handler of the edit dialog.
 }
 \examples{
-\dontrun{
-    # create a handler that ensures that attr1 is an odd number and that 'attr2' and 'attr3'
-    # are filled. (Note that instead of enumerating the attribute names, a DAO function
-    # "getAttributes()" may be called.)
-    handler <- editDialogServer(
-        attributes = c('attr1', 'attr2', 'attr3')
-        validators = c(
-            validator('attr1',
-                      'attr1 must be odd',
-                      function(v) { !is.null(v) && !is.na(v) && v \%\% 2 != 0 }),
-            filledValidator(c('attr2', 'attr3'))
-        )
-   )
-}
+    validator('attr1',
+              function(v) { !is.null(v) && !is.na(v) && v \%\% 2 != 0 })
 }
 \seealso{
-filledValidator, editDialogServer
+\code{\link{filledValidator}}, \code{\link{formServerFactory}}
 }

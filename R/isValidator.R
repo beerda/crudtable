@@ -6,7 +6,7 @@
 #'
 #' @param v An object to be tested
 #' @return \code{TRUE} if 'v' is a valid \code{\link{validator}}
-#' @seealso validator, filledValidator
+#' @seealso \code{\link{validator}}, \code{\link{filledValidator}}
 #' @export
 is.validator <- function(v) {
     is.list(v) &&

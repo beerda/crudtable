@@ -42,17 +42,17 @@ myFormUI <- function(id) {
    # create namespace - note the use of ns() below in *Input calls
    ns <- NS(id)
    formUI(id,
-          textInput(ns('Plant'), 'Plant'),
-          selectInput(ns('Type'), 'Type', choices = c('Quebec', 'Mississippi')),
-          selectInput(ns('Treatment'), 'Treatment', choices = c('nonchilled', 'chilled')),
+          selectInput(ns('Plant'), 'Plant', choices = levels(CO2$Plant)),
+          selectInput(ns('Type'), 'Type', choices = levels(CO2$Type)),
+          selectInput(ns('Treatment'), 'Treatment', choices = levels(CO2$Treatment)),
           numericInput(ns('conc'), 'Ambient CO2 concentration [ml/L]',
                        value = 100, min = 50, max = 1000),
           numericInput(ns('uptake'), 'CO2 uptake rates [umol/m2 sec]',
-                       value = 0, min = 0, max = 100),
+                       value = 0, min = 0, max = 100)
    )
 }
 }
 }
 \seealso{
-formServer, crudTable
+\code{\link{formServerFactory}}, \code{\link{crudTable}}
 }

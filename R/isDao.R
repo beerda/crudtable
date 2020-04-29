@@ -1,7 +1,7 @@
-#' Test whether the given object is a correct 'dao' class
+#' Test whether the given object is a correct \code{dao} class
 #' @param x An object to be tested
-#' @return \code{TRUE} if 'x' is a valid DAO object.
-#' @seealso dataFrameDao, sqlDao
+#' @return \code{TRUE} if \code{x} is a valid DAO object.
+#' @seealso \code{\link{dataFrameDao}}, \code{\link{sqlDao}}
 #' @export
 is.dao <- function(x) {
     is.list(x) &&

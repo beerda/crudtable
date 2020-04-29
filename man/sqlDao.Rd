@@ -12,13 +12,13 @@ sqlDao(con, table)
 \item{table}{A character string of the name of the table to be accessed}
 }
 \value{
-A DAO object, i.e. a list of functions for CRUD operations on the DBI table as
-    neeeded by the \code{\link{crudTable}} module
+A DAO object, i.e. a list of functions for CRUD operations on the DBI table as neeeded by
+  the \code{\link{crudTable}} module
 }
 \description{
-DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}.
-This DAO uses DBI to store the data. The DBI table accessed with this DAO object must not
-contain the 'id' attribute, as it is internally created from the DBI's 'rowid' attribute.
+DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}. This
+DAO uses DBI to store the data. The DBI table accessed with this DAO object must not contain the
+\code{'id'} attribute, as it is internally created from the DBI's \code{'rowid'} attribute.
 }
 \details{
 See \code{\link{dataFrameDao}} for more details on Data Access Objects.
@@ -40,5 +40,5 @@ dao <- sqlDao(con,
 }
 }
 \seealso{
-dataFrameDao, is.dao
+\code{\link{dataFrameDao}}, \code{\link{is.dao}}
 }

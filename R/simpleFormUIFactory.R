@@ -1,3 +1,21 @@
+#' Create simple edit form UI based on data provided by DAO
+#'
+#' Based on attributes provided by the \code{dao} Data Access Object, a simple edit dialog is
+#' constructed with each attribute corresponding to an input as follows:
+#' \itemize{
+#'   \item name of the UI is the same as the name of the attribute;
+#'   \item factor attributes correspond to the \code{\link[shiny]{selectInput}};
+#'   \item numeric attributes correspond to the \code{\link[shiny]{numericInput}};
+#'   \item logical attributes correspond to the \code{\link[shiny]{checkboxInput}};
+#'   \item attributes of any other type correspond to the \code{\link[shiny]{textInput}};
+#' }
+#'
+#' @param dao a Data Access Object (see \code{\link{dataFrameDao}} or \code{\link{sqlDao}})
+#' @return A function that creates the modal dialog window with inputs corresponding to
+#'   \code{dao}'s attributes.
+#' @seealso \code{\link{formServerFactory}}, \code{\link{crudTable}}, \code{\link{dataFrameDao}},
+#'   \code{\link{sqlDao}}
+#' @export
 simpleFormUIFactory <- function(dao) {
     assert_that(is.dao(dao))
 
