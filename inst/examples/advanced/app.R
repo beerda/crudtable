@@ -5,27 +5,42 @@ library(DBI)
 library(RSQLite)
 
 
+#########################################################################
+# 1. Database initialization
+#########################################################################
+
 # Create an in-memory database
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
 # Register database cleanup on stop of the shiny app
 shiny::onStop(function() { dbDisconnect(con) })
 
-# Dictionary of services
-servicePrices <- list(oil=150, tires=100, wash=30)
-
-# Create empty data table
+# Create an empty data frame
 df <- data.frame(date=as.Date(character()),
                  service=character(),
                  amount=numeric(),
                  discount=numeric(),
                  total=numeric(),
                  paid=logical())
+
+# Save the data frame into SQLite as table 'invoice'
 dbWriteTable(con, 'invoice', df)
 
-# Create Data Access Object
+# Create a Data Access Object
 dao <- sqlDao(con, table = 'invoice')
 
+
+#########################################################################
+# 2. Static data initialization
+#########################################################################
+
+# Dictionary of services
+servicePrices <- list(oil=150, tires=100, wash=30)
+
+
+#########################################################################
+# 3. Edit form user interface definition
+#########################################################################
 
 # Create edit form dialog
 myFormUI <- function(id) {
@@ -46,6 +61,10 @@ myFormUI <- function(id) {
 }
 
 
+#########################################################################
+# 4. Initialize the default server-side form handler
+#########################################################################
+
 # Create standard edit form dialog handler that will be used in a custom handler
 defaultFormServer <- formServerFactory(
     dao = dao,
@@ -57,6 +76,10 @@ defaultFormServer <- formServerFactory(
     )
 )
 
+
+#########################################################################
+# 5. Create custom server-side form handler
+#########################################################################
 
 # Create custom edit form dialog handler
 myFormServer <- function(input, output, session) {
@@ -85,14 +108,16 @@ myFormServer <- function(input, output, session) {
 }
 
 
+#########################################################################
+# 6. Shiny app initialization
+#########################################################################
+
 # User Interface
 ui <- fluidPage(
-    useShinyjs(),
     titlePanel('Invoices'),
     hr(),
     crudTableUI('crud')
 )
-
 
 # Server-side
 server <- function(input, output, session) {

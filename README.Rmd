@@ -1,12 +1,44 @@
 ---
-title: "crudtable"
 output:
     md_document:
-        variant: markdown_github
+        variant: gfm
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+
+
+readExample <- function(filename, from=NULL, to=NULL) {
+    cont <- readLines(paste0('inst/examples/', filename))
+    
+    if (!is.null(from)) {
+        from <- grep(paste0('^# ', from, '\\. '), cont)
+        from <- from[1]
+        from <- from + 2
+        while (trimws(cont[from]) == '' && from < length(cont)) {
+            from <- from + 1
+        }
+    } else {
+        from <- 1
+    }
+    
+    if (!is.null(to)) {
+        to <- grep(paste0('^# ', to, '\\. '), cont)
+        to <- to[1]
+        to <- to - 2
+        while (trimws(cont[to]) == '' && to > 1) {
+            to <- to - 1
+        }
+    } else {
+        to <- length(cont)
+    }
+    
+    cont <- cont[seq.int(from, to)]
+    
+    cat('```\n')
+    cat(cont, sep='\n')
+    cat('```\n')
+}
 ```
 
 
@@ -40,31 +72,12 @@ remotes::install_github("beerda/crudtable")
 ```
 
 
-## How to Use
-
-### A Minimal Working Example
+## A Minimal Working Example
 
 A minimal Shiny app that uses **crudtable**:
 
-```
-library(shiny)
-library(crudtable)
-
-# Create DAO (Data Access Object) from the CO2 data frame
-dao <- dataFrameDao(CO2)
-
-# User Interface
-ui <- fluidPage(
-    crudTableUI('crud')
-)
-
-# Server-side
-server <- function(input, output, session) {
-    callModule(crudTable, 'crud', dao)
-}
-
-# Run the shiny app
-shinyApp(ui = ui, server = server)
+```{r, results='asis'}
+readExample('minimal/app.R')
 ```
 
 First, a Data Access Object (DAO) is created with `dataFrameDao`.
@@ -91,3 +104,70 @@ example, which covers:
 * validation of the user input;
 * how to store values that are, rather than directly entered by the user, obtained programmatically.
 
+First of all, let us import all the needed packages:
+
+```{r, results='asis'}
+readExample('advanced/app.R', NULL, 1)
+```
+
+We need `DBI` and `RSQLite` for database access, and `shinyjs` for JavaScript support. 
+
+Next, we initialize the in-memory SQLite database engine and register the connection cleanup hook on
+stop of Shiny. We also create an empty data frame `df` with columns: `date`, `service`,
+`amount`, `discount`, `total` and `paid`. This data frame is saved into SQLite as table `'invoice'`.
+We also create a Data Access Object (DAO) `dao` by calling the `sqlDao()` function:
+
+```{r, results='asis'}
+readExample('advanced/app.R', 1, 2)
+```
+
+For our convenience, we also create a constant list of service prices that will be used to populate
+the select box with values:
+
+```{r, results='asis'}
+readExample('advanced/app.R', 2, 3)
+```
+
+We also want a custom edit dialog window with some pre-defined values and well defined ranges for
+numeric inputs. We also add two read only input lines that will present some computed values to
+the user. For that, we use the `disabled()` function of the `shinyjs` package. Note also the
+namespacing of the input IDs by the `ns()` function, which is mandatory:
+
+```{r, results='asis'}
+readExample('advanced/app.R', 3, 4)
+```
+
+After the edit form UI is defined, we need to create the server part of the form handler. Since
+we want to perform a lot of custom functionality, we code the server part in two steps. First, a
+default form server handler is initialized by calling the `formServerFactory()` function:
+
+```{r, results='asis'}
+readExample('advanced/app.R', 4, 5)
+```
+
+`formServerFactory()` requires `dao` and a definition of `validators`. Validator is a mechanism
+for restricting the input to certain criteria. If the user insert invalid input, an error message
+is shown and the edit form dialog can not be submitted. In the piece of code above, we define two
+types of validators: a custom validator bound to the `amount` data input, which tests the oddness
+of the value. The second validator is `filledValidator` that ensures the data inputs are filled.
+`filledValidator` is bound to all data inputs - we call `names(dao$getAttributes())` instead of
+enumerating names of all data columns.
+
+Now we can define our server-side handler of the edit form. First, `defaultFormServer` handler
+must be called, which returns a list of useful reactive values and triggers. After that, we can
+provide an observer that computes the read only inputs of the form. Note that we need to observe
+the `res$loadTrigger()` here, which triggers everytime the data get loaded into the edit form.
+This ensures that the computed values are initialized properly too. Note also that the server-side
+handler must return the `res`, which is the result of `defaultFormServer`:
+
+```{r, results='asis'}
+readExample('advanced/app.R', 5, 6)
+```
+
+And that's nearly all. The last step is the initialization of the Shiny app. We use `crudTableUI`
+on the client side and we call the `crudTable` module on the server side. The latter gets `dao`,
+`myFormUI` and `myFormServer` as arguments:
+
+```{r, results='asis'}
+readExample('advanced/app.R', 6, NULL)
+```
