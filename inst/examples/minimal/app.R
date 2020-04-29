@@ -1,7 +1,7 @@
 library(shiny)
 library(crudtable)
 
-# Create Data Access Object
+# Data Access Object from the CO2 data frame
 dao <- dataFrameDao(CO2)
 
 # User Interface
