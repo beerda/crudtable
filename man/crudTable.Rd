@@ -9,8 +9,8 @@ crudTable(
   output,
   session,
   dao,
-  formUI,
-  formServer = editDialogServer(dao$getAttributes())
+  formUI = simpleFormUIFactory(dao),
+  formServer = formServerFactory(dao)
 )
 }
 \arguments{
