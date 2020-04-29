@@ -28,9 +28,9 @@ dao <- sqlDao(con, table = 'invoice')
 
 
 # Create edit form dialog
-formUI <- function(id) {
+myFormUI <- function(id) {
     ns <- NS(id)
-    editDialogUI(id,
+    formUI(id,
         dateInput(ns('date'), 'Date', weekstart = 1, value = Sys.Date()),
         selectInput(ns('service'), 'Service', choices = names(servicePrices)),
         disabled(
@@ -47,21 +47,21 @@ formUI <- function(id) {
 
 
 # Create standard edit form dialog handler that will be used in a custom handler
-handler <- editDialogServer(
-    attributes = dao$getAttributes(),
+defaultFormServer <- formServerFactory(
+    dao = dao,
     validators = c(
         validator('amount',
                   'Amount must be odd',
                   function(v) { !is.null(v) && !is.na(v) && v %% 2 != 0 }),
-        filledValidator(dao$getAttributes())
+        filledValidator(names(dao$getAttributes()))
     )
 )
 
 
 # Create custom edit form dialog handler
-formServer <- function(input, output, session) {
+myFormServer <- function(input, output, session) {
     # first do the default behaviour
-    res <- handler(input, output, session)
+    res <- defaultFormServer(input, output, session)
 
     # then compute some input values
     observe({
@@ -96,7 +96,7 @@ ui <- fluidPage(
 
 # Server-side
 server <- function(input, output, session) {
-    callModule(crudTable, 'crud', dao, formUI, formServer)
+    callModule(crudTable, 'crud', dao, myFormUI, myFormServer)
 }
 
 # Run the shiny app
