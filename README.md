@@ -66,7 +66,7 @@ The UI part consists of `crudTableUI` that uses
 The server part consists of the call of the `crudTable` module that
 connects the `crudTableUI` with the DAO.
 
-### An Advanced Example
+## An Advanced Example
 
 All the aspects and capabilities of the **crudtable** package will be
 shown in this advanced example, which covers:
@@ -229,3 +229,7 @@ module on the server side. The latter gets `dao`, `myFormUI` and
     
     # Run the shiny app
     shinyApp(ui = ui, server = server)
+
+Note that it is not needed to call the `useShinyjs()` function in the UI
+of the Shiny application since the **crudtable** package does it
+internally, already.

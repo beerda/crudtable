@@ -94,7 +94,7 @@ with the DAO.
 
 
 
-### An Advanced Example
+## An Advanced Example
 
 All the aspects and capabilities of the **crudtable** package will be shown in this advanced
 example, which covers:
@@ -171,3 +171,6 @@ on the client side and we call the `crudTable` module on the server side. The la
 ```{r, results='asis'}
 readExample('advanced/app.R', 6, NULL)
 ```
+
+Note that it is not needed to call the `useShinyjs()` function in the UI of the Shiny application
+since the **crudtable** package does it internally, already.
