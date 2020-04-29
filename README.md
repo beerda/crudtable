@@ -9,16 +9,16 @@
 [Shiny](https://shiny.rstudio.com/) web applications. With **crudtable**, the following operations
 may be easily achieved:
 
-* **C**reate, **R**read, **U**pdate and **D**elete of data records in
+* *CRUD* - **C**reate, **R**read, **U**pdate and **D**elete of data records in
   [DT](https://cran.r-project.org/web/packages/DT/index.html) DataTable and a modal edit dialog
   window;
-* validation of the user input;
-* storing the data into a database via the standardized [DBI](https://www.r-dbi.org/) package
+* *validation* - ensuring the correct format of the user input;
+* *database access* - storing the data into a database via the standardized [DBI](https://www.r-dbi.org/) package
   for [R](https://www.r-project.org/) or to a file.
   
   
 
-## Getting started
+## Getting Started
 
 To install the latest development version from GitHub:
 
@@ -28,7 +28,7 @@ remotes::install_github("beerda/crudtable")
 ```
 
 
-## How to use
+## How to Use
 
 ### A Minimal Working Example
 
@@ -55,3 +55,20 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 ```
 
+First, a Data Access Object (DAO) is created with `dataFrameDao`.
+DAO is a list structure that provides data access functions to the `crudTable` user interface.
+In this example, a simple DAO is created that works with an in-memory data frame `CO2`. 
+Alternatively, a SQL database may be connected with **crudtable**'s `sqlDao` DAO.
+
+The UI part consists of `crudTableUI` that uses
+[DT](https://cran.r-project.org/web/packages/DT/index.html)'s `DataTable` to view the dataset.
+The **crudtable** UI also provides the *New record*, *Edit record* and *Delete record* buttons.
+
+The server part consists of the call of the `crudTable` module that connects the `crudTableUI`
+with the DAO.
+
+
+
+### An Advanced Example
+
+TBD
