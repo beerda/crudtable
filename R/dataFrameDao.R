@@ -42,7 +42,7 @@ dataFrameDao <- function(d) {
     assert_that(is.data.frame(d))
     assert_that(all(colnames(d) != 'id'))
 
-    d <- as.data.frame(d)
+    d <- as.data.frame(d, stringsAsFactors = FALSE)
     data <- cbind(id=seq_len(nrow(d)), d)
 
     attributes <- map(d, function(col) {
@@ -70,7 +70,8 @@ dataFrameDao <- function(d) {
         insert = function(record) {
             assert_that(is.list(record))
             assert_that(length(setdiff(names(attributes), names(record))) == 0)
-            record$id <- max(data$id) + 1
+            record$id <- max(0, data$id) + 1
+            record <- as.data.frame(record, stringsAsFactors = FALSE)
             data <<- rbind(data, record[colnames(data)])
             invisible(1)
         },
@@ -79,6 +80,7 @@ dataFrameDao <- function(d) {
             assert_that(is.scalar(id) && is.numeric(id))
             assert_that(is.list(record))
             assert_that(length(setdiff(names(attributes), names(record))) == 0)
+            record <- as.data.frame(record, stringsAsFactors = FALSE)
             data[data$id == id, names(attributes)] <<- record[names(attributes)]
             rownames(data) <<- NULL
             invisible(1)

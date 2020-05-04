@@ -49,6 +49,16 @@ test_that("dataFrameDao::insert", {
 })
 
 
+test_that("dataFrameDao::insert to empty dataframe", {
+    d <- CO2[0, ]
+    dao <- dataFrameDao(d)
+    dao$insert(as.list(CO2[6, ]))
+    expected <- cbind(id=1, CO2[6, ])
+    rownames(expected) <- NULL
+    expect_equal(dao$getData(), expected)
+})
+
+
 test_that("dataFrameDao::update", {
     d <- CO2[1:5, ]
     dao <- dataFrameDao(d)
@@ -86,3 +96,15 @@ test_that("dataFrameDao::delete", {
     rownames(exp) <- NULL
     expect_equal(dao$getData(), exp)
 })
+
+
+test_that("dataFrameDao with Date column", {
+    d <- data.frame(date=as.Date(character(0)), name=character(0), stringsAsFactors = FALSE)
+    dao <- dataFrameDao(d)
+    dao$insert(list(date=Sys.Date(), name='john'))
+    expectedDf <- data.frame(id=1, date=Sys.Date(), name='john', stringsAsFactors = FALSE)
+    expectedList <- list(id=1, date=Sys.Date(), name='john')
+    expect_equal(dao$getData(), expectedDf)
+    expect_equal(dao$getRecord(1), expectedList)
+})
+
