@@ -7,6 +7,10 @@
 \usage{
 typecastDateToCharacter(format = "\%Y-\%m-\%d")
 }
+\arguments{
+\item{format}{the format of the character representation of the date (see \code{\link{strptime}}
+for more information)}
+}
 \value{
 An instance of the \code{'typecast'} class
 }
