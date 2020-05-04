@@ -27,11 +27,15 @@
 #' dao <- sqlDao(con,
 #'               table = 'CO2')
 #' }
-sqlDao <- function(con, table) {
+sqlDao <- function(con, table, typecast = list()) {
     assert_that(is.character(table) && is.scalar(table))
+    assert_that(is.list(typecast))
+    assert_that(all(map_lgl(typecast, is.typecast)))
 
     attributes <- DBI::dbListFields(con, table)
     attrlist <- paste0(attributes, collapse = ', ')
+
+    assert_that(length(setdiff(names(typecast), attributes)) == 0)
 
     dataQuery <- paste0('SELECT rowid as id, ', attrlist, ' FROM ', table)
     recordQuery <- paste0('SELECT rowid as id, ', attrlist, ' FROM ', table, ' WHERE rowid = ?')
@@ -48,6 +52,13 @@ sqlDao <- function(con, table) {
     types <- map(row, function(col) { list(type=mode(col)) })
     DBI::dbClearResult(res)
 
+    castme <- function(d, how) {
+        walk(names(typecast), function(n) {
+            d[[n]] <<- typecast[[n]][[how]](d[[n]])
+        })
+        d
+    }
+
     structure(list(
         getAttributes = function() {
             types
@@ -57,7 +68,7 @@ sqlDao <- function(con, table) {
             res <- DBI::dbSendQuery(con, dataQuery)
             d <- DBI::dbFetch(res)
             DBI::dbClearResult(res)
-            d
+            castme(d, 'fromInternal')
         },
 
         getRecord = function(id) {
@@ -68,12 +79,13 @@ sqlDao <- function(con, table) {
             if (nrow(d) <= 0) {
                 return(NULL);
             }
-            as.list(d)
+            as.list(castme(d, 'fromInternal'))
         },
 
         insert = function(record) {
             assert_that(is.list(record))
             assert_that(length(setdiff(attributes, names(record))) == 0)
+            record <- castme(record, 'toInternal')
             v <- unname(record[attributes])
             DBI::dbExecute(con, insertQuery, params = v)
         },
@@ -82,6 +94,7 @@ sqlDao <- function(con, table) {
             assert_that(is.scalar(id) && is.numeric(id))
             assert_that(is.list(record))
             assert_that(length(setdiff(attributes, names(record))) == 0)
+            record <- castme(record, 'toInternal')
             v <- unname(record[attributes])
             DBI::dbExecute(con, updateQuery, params = c(v, id))
         },

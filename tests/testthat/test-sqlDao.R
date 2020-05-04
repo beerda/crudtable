@@ -47,3 +47,69 @@ test_that("sqlDao", {
 
     DBI::dbDisconnect(con)
 })
+
+
+test_that("sqlDao typecasting", {
+    ss <- Sys.Date()
+    data <- data.frame(date = ss + 1:5, value = 2 * 1:5)
+    con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+    DBI::dbWriteTable(con, 'test', data)
+
+    dao <- sqlDao(con, 'test',
+                  typecast = list(date=typecast(function(x) { as.Date(x, origin = '1970-01-01') },
+                                                as.numeric)))
+    expect_true(is.dao(dao))
+
+    res <- dao$getData()
+    expect_true(is.date(res$date))
+
+    res <- dao$getRecord(2)
+    expect_true(is.date(res$date))
+
+    dao$insert(list(date = ss + 10, value = 20))
+    res <- dao$getRecord(6)
+    expect_equal(res$date, ss + 10)
+    expect_equal(res$value, 20)
+
+    dao$update(6, list(date = ss + 20, value = 50))
+    res <- dao$getRecord(6)
+    expect_equal(res$date, ss + 20)
+    expect_equal(res$value, 50)
+
+    DBI::dbDisconnect(con)
+})
+
+
+test_that("sqlDao typecasting 2", {
+    ss <- Sys.Date()
+    data <- data.frame(date = character(0), value = numeric(0))
+    con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+    DBI::dbWriteTable(con, 'test', data)
+
+    dao <- sqlDao(con, 'test',
+                  typecast = list(date=typecast(function(x) { as.Date(x) },
+                                                as.character)))
+    expect_true(is.dao(dao))
+
+    for (i in 1:5) {
+        dao$insert(list(date = ss + i, value = i))
+    }
+
+    res <- dao$getData()
+    expect_true(is.date(res$date))
+
+    res <- dao$getRecord(2)
+    expect_true(is.date(res$date))
+
+    dao$insert(list(date = ss + 10, value = 20))
+    res <- dao$getRecord(6)
+    expect_equal(res$date, ss + 10)
+    expect_equal(res$value, 20)
+
+    dao$update(6, list(date = ss + 20, value = 50))
+    res <- dao$getRecord(6)
+    expect_equal(res$date, ss + 20)
+    expect_equal(res$value, 50)
+
+    DBI::dbDisconnect(con)
+})
