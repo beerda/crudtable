@@ -16,7 +16,7 @@ con <- dbConnect(RSQLite::SQLite(), ":memory:")
 shiny::onStop(function() { dbDisconnect(con) })
 
 # Create an empty data frame
-df <- data.frame(date=as.Date(character()),
+df <- data.frame(date=numeric(),
                  service=character(),
                  amount=numeric(),
                  discount=numeric(),
@@ -27,7 +27,10 @@ df <- data.frame(date=as.Date(character()),
 dbWriteTable(con, 'invoice', df)
 
 # Create a Data Access Object
-dao <- sqlDao(con, table = 'invoice')
+dao <- sqlDao(con,
+              table = 'invoice',
+              typecast = list(date=typecastDateToNumeric()))
+
 
 
 #########################################################################
