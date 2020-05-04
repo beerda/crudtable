@@ -10,6 +10,10 @@ sqlDao(con, table, typecast = list())
 \item{con}{A DBI connection}
 
 \item{table}{A character string of the name of the table to be accessed}
+
+\item{typecast}{A named list of \code{\link{typecast}} objects. If non-empty, the elements of
+this list must correspond to the attributes of the SQL data table. A conversion between
+internal and output data types is then performed on data insert, update or retrieval.}
 }
 \value{
 A DAO object, i.e. a list of functions for CRUD operations on the DBI table as neeeded by
@@ -22,23 +26,37 @@ DAO uses DBI to store the data. The DBI table accessed with this DAO object must
 }
 \details{
 See \code{\link{dataFrameDao}} for more details on Data Access Objects.
+
+Since the DBI interface typically converts various complex R data types (such as \code{Date})
+into atomic types such as number, character string and so on, \code{sqlDao} may optionally
+convert the data for you into a more convenient format -- see the \code{typecast} argument.
 }
 \examples{
-\dontrun{
 library(DBI)
 library(RSQLite)
 
 # Create an in-memory database
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
-# Create CO2 data table from the CO2 data frame
-dbWriteTable(con, 'CO2', as.data.frame(CO2[1:5, ]))
+# Create an empty data table
+data <- data.frame(date = character(0), value = numeric(0))
+dbWriteTable(con, 'mytable', data)
 
-# Create Data Access Object
+# Create Data Access Object - the date attribute will be internally stored as character
+# but transparently returned as 'Date' by the DAO
 dao <- sqlDao(con,
-              table = 'CO2')
-}
+              table = 'mytable',
+              typecast = list(date = typecastDateToCharacter()))
+
+# Insert data record
+dao$insert(list(date = Sys.Date(), value = 100))
+
+# Print data table
+print(dao$getData())
+
+# Disconnect from the database
+dbDisconnect(con)
 }
 \seealso{
-\code{\link{dataFrameDao}}, \code{\link{is.dao}}
+\code{\link{dataFrameDao}}, \code{\link{is.dao}}, \code{\link{typecast}}
 }
