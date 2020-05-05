@@ -102,7 +102,7 @@ the `sqlDao()` function:
     shiny::onStop(function() { dbDisconnect(con) })
     
     # Create an empty data frame
-    df <- data.frame(date=as.Date(character()),
+    df <- data.frame(date=numeric(),
                      service=character(),
                      amount=numeric(),
                      discount=numeric(),
@@ -113,7 +113,14 @@ the `sqlDao()` function:
     dbWriteTable(con, 'invoice', df)
     
     # Create a Data Access Object
-    dao <- sqlDao(con, table = 'invoice')
+    dao <- sqlDao(con,
+                  table = 'invoice',
+                  typecast = list(date=typecastDateToNumeric()))
+
+Note also the `typecast` argument of the `sqlDao()` call: it causes the
+internally numeric attribute `date` to be type casted into `Date`. Such
+workaround is needed because the DBI interface does not support such
+complex data types as `Date`.
 
 For our convenience, we also create a constant list of service prices
 that will be used to populate the select box with values:
@@ -254,7 +261,7 @@ The complete advanced example is as follows:
     shiny::onStop(function() { dbDisconnect(con) })
     
     # Create an empty data frame
-    df <- data.frame(date=as.Date(character()),
+    df <- data.frame(date=numeric(),
                      service=character(),
                      amount=numeric(),
                      discount=numeric(),
@@ -265,7 +272,10 @@ The complete advanced example is as follows:
     dbWriteTable(con, 'invoice', df)
     
     # Create a Data Access Object
-    dao <- sqlDao(con, table = 'invoice')
+    dao <- sqlDao(con,
+                  table = 'invoice',
+                  typecast = list(date=typecastDateToNumeric()))
+    
     
     
     #########################################################################

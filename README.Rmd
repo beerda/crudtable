@@ -122,6 +122,10 @@ We also create a Data Access Object (DAO) `dao` by calling the `sqlDao()` functi
 readExample('advanced/app.R', 1, 2)
 ```
 
+Note also the `typecast` argument of the `sqlDao()` call: it causes the internally numeric attribute
+`date` to be type casted into `Date`. Such workaround is needed because the DBI interface does not
+support such complex data types as `Date`.
+
 For our convenience, we also create a constant list of service prices that will be used to populate
 the select box with values:
 
