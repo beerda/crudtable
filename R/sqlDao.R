@@ -64,17 +64,18 @@ sqlDao <- function(con, table, typecast = list()) {
     deleteQuery <- paste0('DELETE FROM ', table, ' WHERE rowid = ?')
     infoQuery <- paste0('SELECT ', attrlist, ' FROM ', table, ' LIMIT 0')
 
-    res <- DBI::dbSendQuery(con, infoQuery)
-    row <- DBI::dbFetch(res, n = 0)
-    types <- map(row, function(col) { list(type=mode(col)) })
-    DBI::dbClearResult(res)
-
     castme <- function(d, how) {
         walk(names(typecast), function(n) {
             d[[n]] <<- typecast[[n]][[how]](d[[n]])
         })
         d
     }
+
+    res <- DBI::dbSendQuery(con, infoQuery)
+    row <- DBI::dbFetch(res, n = 0)
+    DBI::dbClearResult(res)
+    row <- castme(row, 'fromInternal')
+    types <- map(row, attributeType)
 
     structure(list(
         getAttributes = function() {

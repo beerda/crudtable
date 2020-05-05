@@ -44,14 +44,7 @@ dataFrameDao <- function(d) {
 
     d <- as.data.frame(d, stringsAsFactors = FALSE)
     data <- cbind(id=seq_len(nrow(d)), d)
-
-    attributes <- map(d, function(col) {
-        if (is.factor(col)) {
-            return(list(type='factor',
-                        levels=levels(col)))
-        }
-        list(type=mode(col))
-    })
+    attributes <- map(d, attributeType)
 
     structure(list(
         getAttributes = function() {

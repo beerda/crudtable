@@ -80,7 +80,7 @@ test_that("sqlDao typecasting", {
 })
 
 
-test_that("sqlDao typecasting 2", {
+test_that("sqlDao typecasting (empty start)", {
     ss <- Sys.Date()
     data <- data.frame(date = character(0), value = numeric(0))
     con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
@@ -90,6 +90,10 @@ test_that("sqlDao typecasting 2", {
                   typecast = list(date=typecast(function(x) { as.Date(x) },
                                                 as.character)))
     expect_true(is.dao(dao))
+
+    res <- dao$getAttributes()
+    expect_equal(res, list(date = list(type = 'Date'),
+                           value = list(type = 'numeric')))
 
     for (i in 1:5) {
         dao$insert(list(date = ss + i, value = i))
