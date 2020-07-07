@@ -1,5 +1,5 @@
 Package: crudtable
-Title: Shiny Module for Create-Read-Update-Delete Operations on Data
+Title: A Shiny toolkit for Create-Read-Update-Delete Operations on Data
 Version: 1.0
 Date: 2020-05-01
 Authors@R: 
