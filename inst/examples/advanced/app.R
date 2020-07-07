@@ -32,7 +32,6 @@ dao <- sqlDao(con,
               typecast = list(date=typecastDateToNumeric()))
 
 
-
 #########################################################################
 # 2. Static data initialization
 #########################################################################
@@ -119,12 +118,24 @@ myFormServer <- function(input, output, session) {
 ui <- fluidPage(
     titlePanel('Invoices'),
     hr(),
-    crudTableUI('crud')
+    crudTableUI('crud'),
+    hr(),
+    htmlOutput('summary')
 )
 
 # Server-side
 server <- function(input, output, session) {
     callModule(crudTable, 'crud', dao, myFormUI, myFormServer)
+    output$summary <- renderUI({
+        data <- dao$getData() # also observes data changes performed by this DAO
+        tagList(
+            'Sum of Total: ',
+            tags$b(sum(data$total)),
+            tags$br(),
+            'Sum of Paid: ',
+            tags$b(sum(data$total * data$paid))
+        )
+    })
 }
 
 # Run the shiny app

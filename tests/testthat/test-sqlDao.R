@@ -3,7 +3,8 @@ test_that("sqlDao", {
     con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
     DBI::dbWriteTable(con, 'test', data)
 
-    dao <- sqlDao(con, 'test')
+    dao <- sqlDao(con, 'test',
+                  reactive = FALSE)
     expect_true(is.list(dao))
     expect_true(inherits(dao, 'dao'))
     expect_true(is.dao(dao))
@@ -56,6 +57,7 @@ test_that("sqlDao typecasting", {
     DBI::dbWriteTable(con, 'test', data)
 
     dao <- sqlDao(con, 'test',
+                  reactive = FALSE,
                   typecast = list(date=typecast(function(x) { as.Date(x, origin = '1970-01-01') },
                                                 as.numeric)))
     expect_true(is.dao(dao))
@@ -87,6 +89,7 @@ test_that("sqlDao typecasting (empty start)", {
     DBI::dbWriteTable(con, 'test', data)
 
     dao <- sqlDao(con, 'test',
+                  reactive = FALSE,
                   typecast = list(date=typecast(function(x) { as.Date(x) },
                                                 as.character)))
     expect_true(is.dao(dao))
