@@ -1,7 +1,7 @@
-#' UI part of the form module (edit dialog) for editing the data of the \code{\link{crudTable}}
+#' UI part of the form module (edit dialog) for editing the data of the \code{\link{crudTableServer}}
 #'
-#' @param id Shiny module identifier of the edit dialog as set by the \code{\link{crudTable}}.
-#'     (The id is based on the \code{\link{crudTable}}'s namespace and ends either with
+#' @param id Shiny module identifier of the edit dialog as set by the \code{\link{crudTableServer}}.
+#'     (The id is based on the \code{\link{crudTableServer}}'s namespace and ends either with
 #'     \code{"newForm"} or \code{"editForm"} accordingly to whether the dialog is used for new data
 #'     input or existing data update.)
 #' @param ... The definition of the form, i.e. the shiny input elements whose IDs must be
@@ -30,7 +30,7 @@
 #'    )
 #' }
 #' }
-#' @seealso \code{\link{formServerFactory}}, \code{\link{crudTable}}
+#' @seealso \code{\link{formServerFactory}}, \code{\link{crudTableServer}}
 #' @export
 formUI <- function(id, ...,
                    newTitle = 'New',

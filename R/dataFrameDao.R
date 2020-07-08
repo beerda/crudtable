@@ -1,6 +1,6 @@
 #' A Data Access Object (DAO) that stores the data in the internal data frame.
 #'
-#' DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}.
+#' DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTableServer}}.
 #' This DAO stores internally the data into a data frame, that is, the data are NOT stored on the
 #' disk in any way.
 #'

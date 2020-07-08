@@ -5,7 +5,7 @@
 #' which contains buttons for editing and deleting of table rows, and an action button for the
 #' creation of new records.
 #'
-#' This function is the UI part of the module. For server part see \code{\link{crudTable}}.
+#' This function is the UI part of the module. For server part see \code{\link{crudTableServer}}.
 #'
 #' @param id The ID of the widget
 #' @param newButtonLabel Label of the button for adding of new records. If 'NULL', the button is not
@@ -14,7 +14,7 @@
 #' @param newButtonClass Class of the button for adding of new records
 #' @param newButtonWidth The width of the button, e.g. '400px' or '100\%'
 #' @return An editable data table widget
-#' @seealso \code{\link{crudTable}}
+#' @seealso \code{\link{crudTableServer}}
 #' @export
 #' @examples
 #' \dontrun{
@@ -48,7 +48,7 @@
 #'
 #' # Server-side
 #' server <- function(input, output, session) {
-#'     callModule(crudTable, 'crud', dao, myFormUI, myFormServer)
+#'     crudTableServer('crud', dao, myFormUI, myFormServer)
 #' }
 #'
 #' # Run the shiny app

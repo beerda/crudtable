@@ -17,10 +17,10 @@ internal and output data types is then performed on data insert, update or retri
 }
 \value{
 A DAO object, i.e. a list of functions for CRUD operations on the DBI table as neeeded by
-  the \code{\link{crudTable}} module
+  the \code{\link{crudTableServer}} module
 }
 \description{
-DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}. This
+DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTableServer}}. This
 DAO uses DBI to store the data. The DBI table accessed with this DAO object must not contain the
 \code{'id'} attribute, as it is internally created from the DBI's \code{'rowid'} attribute.
 }

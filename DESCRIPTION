@@ -1,7 +1,7 @@
 Package: crudtable
 Title: A Shiny toolkit for Create-Read-Update-Delete Operations on Data
 Version: 1.0
-Date: 2020-05-01
+Date: 2020-07-10
 Authors@R: 
     person(given = "Michal",
            family = "Burda",
@@ -16,12 +16,12 @@ Description: Crudtable is a module for Shiny web-applications that provides full
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports: 
     assertthat,
     purrr,
     DBI,
-    shiny,
+    shiny (>= 1.5.0),
     DT,
     shinyFeedback,
     shinyjs

@@ -25,6 +25,6 @@ constructed with each attribute corresponding to an input as follows:
 }
 }
 \seealso{
-\code{\link{formServerFactory}}, \code{\link{crudTable}}, \code{\link{dataFrameDao}},
+\code{\link{formServerFactory}}, \code{\link{crudTableServer}}, \code{\link{dataFrameDao}},
   \code{\link{sqlDao}}
 }

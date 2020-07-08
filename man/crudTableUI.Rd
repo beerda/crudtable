@@ -34,7 +34,7 @@ which contains buttons for editing and deleting of table rows, and an action but
 creation of new records.
 }
 \details{
-This function is the UI part of the module. For server part see \code{\link{crudTable}}.
+This function is the UI part of the module. For server part see \code{\link{crudTableServer}}.
 }
 \examples{
 \dontrun{
@@ -68,7 +68,7 @@ ui <- fluidPage(
 
 # Server-side
 server <- function(input, output, session) {
-    callModule(crudTable, 'crud', dao, myFormUI, myFormServer)
+    crudTableServer('crud', dao, myFormUI, myFormServer)
 }
 
 # Run the shiny app
@@ -76,5 +76,5 @@ shinyApp(ui = ui, server = server)
 }
 }
 \seealso{
-\code{\link{crudTable}}
+\code{\link{crudTableServer}}
 }

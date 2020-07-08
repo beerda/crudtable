@@ -13,7 +13,7 @@
 #' @param dao a Data Access Object (see \code{\link{dataFrameDao}} or \code{\link{sqlDao}})
 #' @return A function that creates the modal dialog window with inputs corresponding to
 #'   \code{dao}'s attributes.
-#' @seealso \code{\link{formServerFactory}}, \code{\link{crudTable}}, \code{\link{dataFrameDao}},
+#' @seealso \code{\link{formServerFactory}}, \code{\link{crudTableServer}}, \code{\link{dataFrameDao}},
 #'   \code{\link{sqlDao}}
 #' @export
 simpleFormUIFactory <- function(dao) {

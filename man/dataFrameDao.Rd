@@ -15,7 +15,7 @@ An S3 object of class \code{dao}, which is a list having as elements the functio
     described above
 }
 \description{
-DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTable}}.
+DAO is a list that provides basic backend CRUD functionality to the \code{\link{crudTableServer}}.
 This DAO stores internally the data into a data frame, that is, the data are NOT stored on the
 disk in any way.
 }

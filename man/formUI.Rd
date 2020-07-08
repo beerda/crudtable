@@ -2,7 +2,7 @@
 % Please edit documentation in R/formUI.R
 \name{formUI}
 \alias{formUI}
-\title{UI part of the form module (edit dialog) for editing the data of the \code{\link{crudTable}}}
+\title{UI part of the form module (edit dialog) for editing the data of the \code{\link{crudTableServer}}}
 \usage{
 formUI(
   id,
@@ -14,8 +14,8 @@ formUI(
 )
 }
 \arguments{
-\item{id}{Shiny module identifier of the edit dialog as set by the \code{\link{crudTable}}.
-(The id is based on the \code{\link{crudTable}}'s namespace and ends either with
+\item{id}{Shiny module identifier of the edit dialog as set by the \code{\link{crudTableServer}}.
+(The id is based on the \code{\link{crudTableServer}}'s namespace and ends either with
 \code{"newForm"} or \code{"editForm"} accordingly to whether the dialog is used for new data
 input or existing data update.)}
 
@@ -33,7 +33,7 @@ as need by the UI modules, see the example below.}
 \item{cancelLabel}{Label of the cancel button}
 }
 \description{
-UI part of the form module (edit dialog) for editing the data of the \code{\link{crudTable}}
+UI part of the form module (edit dialog) for editing the data of the \code{\link{crudTableServer}}
 }
 \examples{
 \dontrun{
@@ -54,5 +54,5 @@ myFormUI <- function(id) {
 }
 }
 \seealso{
-\code{\link{formServerFactory}}, \code{\link{crudTable}}
+\code{\link{formServerFactory}}, \code{\link{crudTableServer}}
 }
