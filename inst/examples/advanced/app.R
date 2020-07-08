@@ -128,7 +128,7 @@ server <- function(input, output, session) {
     dataChangeTrigger <- crudTableServer('crud', dao, myFormUI, myFormServer)
 
     output$summary <- renderUI({
-        dataChangeTrigger()
+        dataChangeTrigger() # establish dependency on data change
         data <- dao$getData()
         tagList(
             'Sum of Total: ',
