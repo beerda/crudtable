@@ -1,6 +1,6 @@
 test_that("dataFrameDao::getAttributes", {
     d <- CO2[1:5, ]
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
 
     expect_true(is.dao(dao))
     expect_equal(dao$getAttributes(),
@@ -17,7 +17,7 @@ test_that("dataFrameDao::getAttributes", {
 
 test_that("dataFrameDao::getData", {
     d <- CO2[1:5, ]
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
 
     expect_equal(dao$getData(), cbind(id=1:5, CO2[1:5, ]))
 
@@ -35,7 +35,7 @@ test_that("dataFrameDao::getData", {
 
 test_that("dataFrameDao::getRecord", {
     d <- CO2[1:5, ]
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
 
     expect_equal(dao$getRecord(2), as.list(cbind(id=2, CO2[2, ])))
 })
@@ -43,7 +43,7 @@ test_that("dataFrameDao::getRecord", {
 
 test_that("dataFrameDao::insert", {
     d <- CO2[1:5, ]
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
     dao$insert(as.list(CO2[6, ]))
     expect_equal(dao$getData(), cbind(id=1:6, CO2[1:6, ]))
 })
@@ -51,7 +51,7 @@ test_that("dataFrameDao::insert", {
 
 test_that("dataFrameDao::insert to empty dataframe", {
     d <- CO2[0, ]
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
     dao$insert(as.list(CO2[6, ]))
     expected <- cbind(id=1, CO2[6, ])
     rownames(expected) <- NULL
@@ -61,7 +61,7 @@ test_that("dataFrameDao::insert to empty dataframe", {
 
 test_that("dataFrameDao::update", {
     d <- CO2[1:5, ]
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
     dao$update(3, as.list(CO2[6, ]))
     exp <- cbind(id=1:5, CO2[c(1,2,6,4,5), ])
     rownames(exp) <- NULL
@@ -71,7 +71,7 @@ test_that("dataFrameDao::update", {
 
 test_that("dataFrameDao::update non continuous ids", {
     d <- CO2[1:5, ]
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
     dao$delete(2)
     dao$update(3, as.list(CO2[6, ]))
     exp <- cbind(id=c(1,3:5), CO2[c(1,6,4,5), ])
@@ -82,7 +82,7 @@ test_that("dataFrameDao::update non continuous ids", {
 
 test_that("dataFrameDao::delete", {
     d <- CO2[1:5, ]
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
 
     dao$delete(3)
     exp <- cbind(id=1:5, CO2[1:5, ])
@@ -100,7 +100,7 @@ test_that("dataFrameDao::delete", {
 
 test_that("dataFrameDao with Date column", {
     d <- data.frame(date=as.Date(character(0)), name=character(0), stringsAsFactors = FALSE)
-    dao <- dataFrameDao(d, reactive = FALSE)
+    dao <- dataFrameDao(d)
     dao$insert(list(date=Sys.Date(), name='john'))
     expectedDf <- data.frame(id=1, date=Sys.Date(), name='john', stringsAsFactors = FALSE)
     expectedList <- list(id=1, date=Sys.Date(), name='john')

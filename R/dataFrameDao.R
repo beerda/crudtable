@@ -38,7 +38,7 @@
 #' dao$insert(list(Plant='Qn1', Type='Quebec', Treatment='chilled', conc=1000, uptake=2000))
 #' dao$delete(1)
 #' print(dao$getData)
-dataFrameDao <- function(d, reactive = TRUE) {
+dataFrameDao <- function(d) {
     assert_that(is.data.frame(d))
     assert_that(all(colnames(d) != 'id'))
 
@@ -46,29 +46,17 @@ dataFrameDao <- function(d, reactive = TRUE) {
     data <- cbind(id=seq_len(nrow(d)), d)
     attributes <- map(d, attributeType)
 
-    if (reactive) {
-        dataChangedTrigger <- reactiveVal(0, label=paste0(table, ' trigger'))
-    } else {
-        dataChangedTrigger <- function(...) { }
-    }
-
     structure(list(
-        observeDataChange = function() {
-            dataChangedTrigger()
-        },
-
         getAttributes = function() {
             attributes
         },
 
         getData = function() {
-            dataChangedTrigger()
             data
         },
 
         getRecord = function(id) {
             assert_that(is.scalar(id) && is.numeric(id))
-            dataChangedTrigger()
             as.list(data[data$id == id, ])
         },
 
@@ -78,7 +66,6 @@ dataFrameDao <- function(d, reactive = TRUE) {
             record$id <- max(0, data$id) + 1
             record <- as.data.frame(record, stringsAsFactors = FALSE)
             data <<- rbind(data, record[colnames(data)])
-            dataChangedTrigger(dataChangedTrigger() + 1)
             invisible(1)
         },
 
@@ -89,7 +76,6 @@ dataFrameDao <- function(d, reactive = TRUE) {
             record <- as.data.frame(record, stringsAsFactors = FALSE)
             data[data$id == id, names(attributes)] <<- record[names(attributes)]
             rownames(data) <<- NULL
-            dataChangedTrigger(dataChangedTrigger() + 1)
             invisible(1)
         },
 
@@ -97,7 +83,6 @@ dataFrameDao <- function(d, reactive = TRUE) {
             assert_that(is.scalar(id) && is.numeric(id))
             data <<- data[data$id != id, ]
             rownames(data) <<- NULL
-            dataChangedTrigger(dataChangedTrigger() + 1)
             invisible(1)
         }
     ), class = 'dao')

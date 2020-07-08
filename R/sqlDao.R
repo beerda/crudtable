@@ -44,7 +44,7 @@
 #'
 #' # Disconnect from the database
 #' dbDisconnect(con)
-sqlDao <- function(con, table, typecast = list(), reactive = TRUE) {
+sqlDao <- function(con, table, typecast = list()) {
     assert_that(is.character(table) && is.scalar(table))
     assert_that(is.list(typecast))
     assert_that(all(map_lgl(typecast, is.typecast)))
@@ -76,23 +76,13 @@ sqlDao <- function(con, table, typecast = list(), reactive = TRUE) {
     DBI::dbClearResult(res)
     row <- castme(row, 'fromInternal')
     types <- map(row, attributeType)
-    if (reactive) {
-        dataChangedTrigger <- reactiveVal(0, label=paste0(table, ' trigger'))
-    } else {
-        dataChangedTrigger <- function(...) { }
-    }
 
     structure(list(
-        observeDataChange = function() {
-            dataChangedTrigger()
-        },
-
         getAttributes = function() {
             types
         },
 
         getData = function() {
-            dataChangedTrigger()
             res <- DBI::dbSendQuery(con, dataQuery)
             d <- DBI::dbFetch(res)
             DBI::dbClearResult(res)
@@ -101,7 +91,6 @@ sqlDao <- function(con, table, typecast = list(), reactive = TRUE) {
 
         getRecord = function(id) {
             assert_that(is.scalar(id) && is.numeric(id))
-            dataChangedTrigger()
             res <- DBI::dbSendQuery(con, recordQuery, params = list(id))
             d <- DBI::dbFetch(res)
             DBI::dbClearResult(res)
@@ -117,7 +106,6 @@ sqlDao <- function(con, table, typecast = list(), reactive = TRUE) {
             record <- castme(record, 'toInternal')
             v <- unname(record[attributes])
             res <- DBI::dbExecute(con, insertQuery, params = v)
-            dataChangedTrigger(dataChangedTrigger() + 1)
             res
         },
 
@@ -128,14 +116,12 @@ sqlDao <- function(con, table, typecast = list(), reactive = TRUE) {
             record <- castme(record, 'toInternal')
             v <- unname(record[attributes])
             res <- DBI::dbExecute(con, updateQuery, params = c(v, id))
-            dataChangedTrigger(dataChangedTrigger() + 1)
             res
         },
 
         delete = function(id) {
             assert_that(is.scalar(id) && is.numeric(id))
             res <- DBI::dbExecute(con, deleteQuery, params = list(id))
-            dataChangedTrigger(dataChangedTrigger() + 1)
             res
         }
     ), class = 'dao')
