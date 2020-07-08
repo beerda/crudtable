@@ -46,7 +46,7 @@ A minimal Shiny app that uses **crudtable**:
     
     # Server-side
     server <- function(input, output, session) {
-        callModule(crudTable, 'crud', dao)
+        crudTableServer('crud', dao)
     }
     
     # Run the shiny app
@@ -55,7 +55,7 @@ A minimal Shiny app that uses **crudtable**:
 First, a Data Access Object (DAO) is created with `dataFrameDao`. DAO is
 a list structure that provides data access functions to the `crudTable`
 user interface. In this example, a simple DAO is created that works with
-an in-memory data frame `CO2`. Alternatively, a SQL database may be
+an in-memory data frame `CO2`. Alternatively, an SQL database may be
 connected with **crudtable**’s `sqlDao` DAO.
 
 The UI part consists of `crudTableUI` that uses
@@ -218,20 +218,38 @@ handler must return the `res`, which is the result of
     }
 
 And that’s nearly all. The last step is the initialization of the Shiny
-app. We use `crudTableUI` on the client side and we call the `crudTable`
-module on the server side. The latter gets `dao`, `myFormUI` and
-`myFormServer` as arguments:
+app. We use `crudTableUI` on the client side and we call the
+`crudTableServer` function on the server side. The latter gets `dao`,
+`myFormUI` and `myFormServer` as arguments. Note also that the
+`crudTableServer` function returns a reactive value that changes
+everytime the CRUD table widget changes the data. That reactive value
+can be used to trigger update of output widgets that rely on the data,
+as can be seen below.
 
     # User Interface
     ui <- fluidPage(
         titlePanel('Invoices'),
         hr(),
-        crudTableUI('crud')
+        crudTableUI('crud'),
+        hr(),
+        htmlOutput('summary')
     )
     
     # Server-side
     server <- function(input, output, session) {
-        callModule(crudTable, 'crud', dao, myFormUI, myFormServer)
+        dataChangeTrigger <- crudTableServer('crud', dao, myFormUI, myFormServer)
+    
+        output$summary <- renderUI({
+            dataChangeTrigger()
+            data <- dao$getData()
+            tagList(
+                'Sum of Total: ',
+                tags$b(sum(data$total)),
+                tags$br(),
+                'Sum of Paid: ',
+                tags$b(sum(data$total * data$paid))
+            )
+        })
     }
     
     # Run the shiny app
@@ -275,7 +293,6 @@ The complete advanced example is as follows:
     dao <- sqlDao(con,
                   table = 'invoice',
                   typecast = list(date=typecastDateToNumeric()))
-    
     
     
     #########################################################################
@@ -364,12 +381,26 @@ The complete advanced example is as follows:
     ui <- fluidPage(
         titlePanel('Invoices'),
         hr(),
-        crudTableUI('crud')
+        crudTableUI('crud'),
+        hr(),
+        htmlOutput('summary')
     )
     
     # Server-side
     server <- function(input, output, session) {
-        callModule(crudTable, 'crud', dao, myFormUI, myFormServer)
+        dataChangeTrigger <- crudTableServer('crud', dao, myFormUI, myFormServer)
+    
+        output$summary <- renderUI({
+            dataChangeTrigger()
+            data <- dao$getData()
+            tagList(
+                'Sum of Total: ',
+                tags$b(sum(data$total)),
+                tags$br(),
+                'Sum of Paid: ',
+                tags$b(sum(data$total * data$paid))
+            )
+        })
     }
     
     # Run the shiny app

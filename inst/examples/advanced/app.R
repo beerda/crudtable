@@ -125,9 +125,11 @@ ui <- fluidPage(
 
 # Server-side
 server <- function(input, output, session) {
-    callModule(crudTable, 'crud', dao, myFormUI, myFormServer)
+    dataChangeTrigger <- crudTableServer('crud', dao, myFormUI, myFormServer)
+
     output$summary <- renderUI({
-        data <- dao$getData() # also observes data changes performed by this DAO
+        dataChangeTrigger()
+        data <- dao$getData()
         tagList(
             'Sum of Total: ',
             tags$b(sum(data$total)),

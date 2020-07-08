@@ -170,8 +170,10 @@ readExample('advanced/app.R', 5, 6)
 ```
 
 And that's nearly all. The last step is the initialization of the Shiny app. We use `crudTableUI`
-on the client side and we call the `crudTable` module on the server side. The latter gets `dao`,
-`myFormUI` and `myFormServer` as arguments:
+on the client side and we call the `crudTableServer` function on the server side. The latter gets `dao`,
+`myFormUI` and `myFormServer` as arguments. Note also that the `crudTableServer` function returns
+a reactive value that changes everytime the CRUD table widget changes the data. That reactive value
+can be used to trigger update of output widgets that rely on the data, as can be seen below.
 
 ```{r, results='asis'}
 readExample('advanced/app.R', 6, NULL)

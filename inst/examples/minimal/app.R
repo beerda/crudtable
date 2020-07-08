@@ -11,7 +11,7 @@ ui <- fluidPage(
 
 # Server-side
 server <- function(input, output, session) {
-    callModule(crudTable, 'crud', dao)
+    crudTableServer('crud', dao)
 }
 
 # Run the shiny app
