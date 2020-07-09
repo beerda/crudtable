@@ -22,6 +22,11 @@ it easy to develop an editable data table in
     standardized [DBI](https://www.r-dbi.org/) package for
     [R](https://www.r-project.org/) or to a file.
 
+## Live Demo
+
+See the [live demo](https://beerda.shinyapps.io/crudtable/) of the
+**crudtable** package.
+
 ## Getting Started
 
 To install the latest development version from GitHub:
@@ -240,7 +245,7 @@ as can be seen below.
         dataChangeTrigger <- crudTableServer('crud', dao, myFormUI, myFormServer)
     
         output$summary <- renderUI({
-            dataChangeTrigger()
+            dataChangeTrigger() # establish dependency on data change
             data <- dao$getData()
             tagList(
                 'Sum of Total: ',
@@ -391,7 +396,7 @@ The complete advanced example is as follows:
         dataChangeTrigger <- crudTableServer('crud', dao, myFormUI, myFormServer)
     
         output$summary <- renderUI({
-            dataChangeTrigger()
+            dataChangeTrigger() # establish dependency on data change
             data <- dao$getData()
             tagList(
                 'Sum of Total: ',

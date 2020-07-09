@@ -61,6 +61,12 @@ the following operations may be easily achieved:
 * *database access* - storing the data into a database via the standardized [DBI](https://www.r-dbi.org/) package
   for [R](https://www.r-project.org/) or to a file.
   
+
+
+## Live Demo
+
+See the [live demo](https://beerda.shinyapps.io/crudtable/) of the **crudtable** package.
+
   
 
 ## Getting Started
