@@ -42,31 +42,34 @@ formServerFactory <- function(dao,
             }
         })
 
-        errors <- rep(FALSE, length(validators))
+        errors <- map(names(validators), function(n) { reactiveVal(FALSE) })
         names(errors) <- names(validators)
-        errors <- reactiveVal(errors)
         for (n in names(validators)) {
             local({
                 nn <- n
-                observeEvent(input[[nn]], ignoreNULL = FALSE, {
+                # ignoreInit = TRUE was set to speed-up the execution on shinyapps.io.
+                # Hopefully, it will not break anything else.
+                observeEvent(input[[nn]], ignoreNULL = FALSE, ignoreInit = TRUE, {
                     v <- input[[nn]]
-                    err <- errors()
                     errMsg <- validators[[nn]][['errorMessage']]
                     invalid <- !validators[[nn]][['f']](v)
                     if (!is.logical(invalid) || is.null(invalid) || is.na(invalid)) {
                         warning('Ignoring "', nn, '" validator\'s non-logical result: ', invalid)
                         invalid <- FALSE
                     }
-                    shinyFeedback::feedbackDanger(nn, invalid, errMsg)
-                    err[nn] <- invalid
-                    errors(err)
+                    if (invalid) {
+                        shinyFeedback::showFeedbackDanger(nn, errMsg)
+                    } else {
+                        shinyFeedback::hideFeedback(nn)
+                    }
+                    errors[[nn]](invalid)
                 })
             })
         }
 
         observe({
-            err <- errors()
-            if (any(err)) {
+            err <- map(errors, function(e) { e() })
+            if (any(unlist(err))) {
                 shinyjs::disable('submit')
             } else {
                 shinyjs::enable('submit')
