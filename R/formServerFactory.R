@@ -48,7 +48,7 @@ formServerFactory <- function(dao,
         for (n in names(validators)) {
             local({
                 nn <- n
-                observeEvent(input[[nn]], {
+                observeEvent(input[[nn]], ignoreNULL = FALSE, {
                     v <- input[[nn]]
                     err <- errors()
                     errMsg <- validators[[nn]][['errorMessage']]
@@ -57,10 +57,10 @@ formServerFactory <- function(dao,
                         warning('Ignoring "', nn, '" validator\'s non-logical result: ', invalid)
                         invalid <- FALSE
                     }
-                    shinyFeedback::feedbackDanger(session$ns(nn), invalid, errMsg)
+                    shinyFeedback::feedbackDanger(nn, invalid, errMsg)
                     err[nn] <- invalid
                     errors(err)
-                }, ignoreNULL=FALSE)
+                })
             })
         }
 
