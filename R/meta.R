@@ -9,7 +9,7 @@ meta <- function(id,
     assert_that(is.string(id))
     assert_that(is.string(label))
     assert_that(is.validator(validator) || is.null(validator))
-    assert_that(is.typecast(typecast) || is.null(validator))
+    assert_that(is.typecast(typecast) || is.null(typecast))
     assert_that(is.function(input) || is.null(input))
 
     f <- input
