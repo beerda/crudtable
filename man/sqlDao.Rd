@@ -4,7 +4,7 @@
 \alias{sqlDao}
 \title{A Data Access Object (DAO) that uses the DBI interface to access the data.}
 \usage{
-sqlDao(con, table, typecast = list(), meta = list())
+sqlDao(con, table, typecast = list(), attributes = list())
 }
 \arguments{
 \item{con}{A DBI connection}

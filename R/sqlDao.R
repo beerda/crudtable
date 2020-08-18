@@ -44,29 +44,29 @@
 #'
 #' # Disconnect from the database
 #' dbDisconnect(con)
-sqlDao <- function(con, table, typecast = list(), meta = list()) {
+sqlDao <- function(con, table, typecast = list(), attributes = list()) {
     assert_that(is.character(table) && is.scalar(table))
     assert_that(is.list(typecast))
     assert_that(all(map_lgl(typecast, is.typecast)))
-    assert_that(is.list(meta))
-    assert_that(all(map_lgl(meta, is.meta)))
+    assert_that(is.list(attributes))
+    assert_that(all(map_lgl(attributes, is.attribute)))
 
-    attributes <- DBI::dbListFields(con, table)
-    attrlist <- paste0(attributes, collapse = ', ')
+    stored <- DBI::dbListFields(con, table)
+    attrlist <- paste0(stored, collapse = ', ')
 
     if (length(typecast) <= 0) {
-        typecast <- .metaVec(meta, 'typecast')
+        typecast <- .metaVec(attributes, 'typecast')
     }
 
-    assert_that(length(setdiff(names(typecast), attributes)) == 0)
+    assert_that(length(setdiff(names(typecast), stored)) == 0)
 
     dataQuery <- paste0('SELECT rowid as id, ', attrlist, ' FROM ', table)
     recordQuery <- paste0('SELECT rowid as id, ', attrlist, ' FROM ', table, ' WHERE rowid = ?')
     insertQuery <- paste0('INSERT INTO ', table, ' (', attrlist, ') ',
-                          'VALUES ($', paste0(seq_along(attributes), collapse = ', $'), ')')
+                          'VALUES ($', paste0(seq_along(stored), collapse = ', $'), ')')
     updateQuery <- paste0('UPDATE ', table, ' SET ',
-                          paste0(attributes, '=$', seq_along(attributes), collapse = ', '),
-                          ' WHERE rowid = $', length(attributes) + 1)
+                          paste0(stored, '=$', seq_along(stored), collapse = ', '),
+                          ' WHERE rowid = $', length(stored) + 1)
     deleteQuery <- paste0('DELETE FROM ', table, ' WHERE rowid = ?')
     infoQuery <- paste0('SELECT ', attrlist, ' FROM ', table, ' LIMIT 0')
 
@@ -89,7 +89,7 @@ sqlDao <- function(con, table, typecast = list(), meta = list()) {
         },
 
         getMeta = function() {
-            meta
+            attributes
         },
 
         getData = function() {
@@ -112,9 +112,9 @@ sqlDao <- function(con, table, typecast = list(), meta = list()) {
 
         insert = function(record) {
             assert_that(is.list(record))
-            assert_that(length(setdiff(attributes, names(record))) == 0)
+            assert_that(length(setdiff(stored, names(record))) == 0)
             record <- castme(record, 'toInternal')
-            v <- unname(record[attributes])
+            v <- unname(record[stored])
             res <- DBI::dbExecute(con, insertQuery, params = v)
             res
         },
@@ -122,9 +122,9 @@ sqlDao <- function(con, table, typecast = list(), meta = list()) {
         update = function(id, record) {
             assert_that(is.scalar(id) && is.numeric(id))
             assert_that(is.list(record))
-            assert_that(length(setdiff(attributes, names(record))) == 0)
+            assert_that(length(setdiff(stored, names(record))) == 0)
             record <- castme(record, 'toInternal')
-            v <- unname(record[attributes])
+            v <- unname(record[stored])
             res <- DBI::dbExecute(con, updateQuery, params = c(v, id))
             res
         },

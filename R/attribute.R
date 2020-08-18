@@ -1,11 +1,11 @@
 #' @export
-meta <- function(id,
-                 label = id,
-                 validator = NULL,
-                 typecast = NULL,
-                 readOnly = FALSE,
-                 input = NULL,
-                 ...) {
+attribute <- function(id,
+                      label = id,
+                      validator = NULL,
+                      typecast = NULL,
+                      readOnly = FALSE,
+                      input = NULL,
+                      ...) {
     assert_that(is.string(id))
     assert_that(is.string(label))
     assert_that(is.validator(validator) || is.null(validator))
@@ -25,13 +25,13 @@ meta <- function(id,
                    typecast = typecast,
                    input = f,
                    ...),
-              class = 'meta')
+              class = 'attribute')
 }
 
 
-.metaVec <- function(meta, what) {
-    res <- map(meta, ~.x[[what]])
-    names(res) <- map_chr(meta, ~.x[['id']])
+.metaVec <- function(attribute, what) {
+    res <- map(attribute, ~.x[[what]])
+    names(res) <- map_chr(attribute, ~.x[['id']])
     res <- res[!map_lgl(res, is.null)]
     res
 }

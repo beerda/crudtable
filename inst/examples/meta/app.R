@@ -37,13 +37,13 @@ dbWriteTable(con, 'invoice', df)
 # Create a Data Access Object
 dao <- sqlDao(con,
               table = 'invoice',
-              meta = list(dateMeta(id='date', 'Date', weekstart = 1, value = Sys.Date()),
-                          factorMeta(id='service', 'Service', choices=names(servicePrices)),
-                          numericMeta(id='price', 'Price', readOnly = TRUE, value = NA),
-                          numericMeta(id='amount', 'Amount', value = 1, min = 1, max = 10),
-                          numericMeta(id='discount', 'Discount (%)', value = 0, min = 0, max = 10),
-                          numericMeta(id='total', 'Total', readOnly=TRUE, value = NA, min = 0, max = 1000000),
-                          logicalMeta(id='paid', 'Paid', value = FALSE)))
+              attributes = list(dateAttribute(id='date', 'Date', weekstart = 1, value = Sys.Date()),
+                                factorAttribute(id='service', 'Service', choices=names(servicePrices)),
+                                numericAttribute(id='price', 'Price', readOnly = TRUE, value = NA),
+                                numericAttribute(id='amount', 'Amount', value = 1, min = 1, max = 10),
+                                numericAttribute(id='discount', 'Discount (%)', value = 0, min = 0, max = 10),
+                                numericAttribute(id='total', 'Total', readOnly=TRUE, value = NA, min = 0, max = 1000000),
+                                logicalAttribute(id='paid', 'Paid', value = FALSE)))
 
 
 #########################################################################

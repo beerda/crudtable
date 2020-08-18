@@ -7,7 +7,7 @@
 crudTableServer(
   id,
   dao,
-  formUI = formUIFactory(dao, "simple"),
+  formUI = formUIFactory(dao),
   formServer = formServerFactory(dao)
 )
 }
