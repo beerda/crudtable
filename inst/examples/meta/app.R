@@ -47,14 +47,6 @@ dao <- sqlDao(con,
 
 
 #########################################################################
-# 3. Edit form user interface definition
-#########################################################################
-
-# Create edit form dialog
-myFormUI <- formUIFactory(dao)
-
-
-#########################################################################
 # 4. Initialize the default server-side form handler
 #########################################################################
 
@@ -116,7 +108,9 @@ ui <- fluidPage(
 
 # Server-side
 server <- function(input, output, session) {
-    dataChangeTrigger <- crudTableServer('crud', dao, myFormUI, myFormServer)
+    dataChangeTrigger <- crudTableServer(id = 'crud',
+                                         dao = dao,
+                                         formServer = myFormServer)
 
     output$summary <- renderUI({
         dataChangeTrigger() # establish dependency on data change
