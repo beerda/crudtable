@@ -27,3 +27,11 @@ meta <- function(id,
                    ...),
               class = 'meta')
 }
+
+
+.metaVec <- function(meta, what) {
+    res <- map(meta, ~.x[[what]])
+    names(res) <- map_chr(meta, ~.x[['id']])
+    res <- res[!map_lgl(res, is.null)]
+    res
+}

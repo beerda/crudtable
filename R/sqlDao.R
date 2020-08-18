@@ -55,9 +55,7 @@ sqlDao <- function(con, table, typecast = list(), meta = list()) {
     attrlist <- paste0(attributes, collapse = ', ')
 
     if (length(typecast) <= 0) {
-        typecast <- map(meta, function(m) m$typecast)
-        names(typecast) <- map_chr(meta, function(m) m$id)
-        typecast <- typecast[!map_lgl(typecast, is.null)]
+        typecast <- .metaVec(meta, 'typecast')
     }
 
     assert_that(length(setdiff(names(typecast), attributes)) == 0)
