@@ -70,7 +70,7 @@
 #' }
 crudTableServer <- function(id,
                             dao,
-                            formUI = formUIFactory(dao, 'simple'),
+                            formUI = formUIFactory(dao),
                             formServer = formServerFactory(dao)) {
 
     moduleServer(id, function(input, output, session) {
