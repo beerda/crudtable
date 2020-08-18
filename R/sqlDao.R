@@ -44,13 +44,21 @@
 #'
 #' # Disconnect from the database
 #' dbDisconnect(con)
-sqlDao <- function(con, table, typecast = list()) {
+sqlDao <- function(con, table, typecast = list(), meta = list()) {
     assert_that(is.character(table) && is.scalar(table))
     assert_that(is.list(typecast))
     assert_that(all(map_lgl(typecast, is.typecast)))
+    assert_that(is.list(meta))
+    assert_that(all(map_lgl(meta, is.meta)))
 
     attributes <- DBI::dbListFields(con, table)
     attrlist <- paste0(attributes, collapse = ', ')
+
+    if (length(typecast) <= 0) {
+        typecast <- map(meta, function(m) m$typecast)
+        names(typecast) <- map_chr(meta, function(m) m$id)
+        typecast <- typecast[!map_lgl(typecast, is.null)]
+    }
 
     assert_that(length(setdiff(names(typecast), attributes)) == 0)
 
@@ -80,6 +88,10 @@ sqlDao <- function(con, table, typecast = list()) {
     structure(list(
         getAttributes = function() {
             types
+        },
+
+        getMeta = function() {
+            meta
         },
 
         getData = function() {
