@@ -25,11 +25,11 @@ simpleFormUIFactory <- function(dao) {
         ns <- NS(id)
         widgets <- map(names(attributes), function(name) {
             a <- attributes[[name]]
-            if (a$type == 'factor') {
+            if ('factor' %in% a$type) {
                 selectInput(ns(name), name, choices = a$levels)
-            } else if (a$type == 'numeric') {
+            } else if ('numeric' %in% a$type) {
                 numericInput(ns(name), name, value = NA)
-            } else if (a$type == 'logical') {
+            } else if ('logical' %in% a$type) {
                 checkboxInput(ns(name), name)
             } else {
                 textInput(ns(name), name, value = NA)
